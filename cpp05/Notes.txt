@@ -1,0 +1,103 @@
+ Important Notes:
+* Exceptions can slow down performance if misused → only use for unexpected cases.
+* Always catch exceptions by reference (e.g., catch(const std::exception& e)), not by value.
+* If an exception is thrown but not caught, the program terminates.
+_________________________________________________
+
+What does throw do?
+
+The throw keyword creates (raises) an exception.
+When a throw statement is executed:
+
+* Normal execution stops immediately in that function.
+* The program starts looking for the nearest matching catch block in the current function or caller functions (stack unwinding).
+* If no handler is found → the program terminates.
+_________________________________________________
+expression can be:
+
+* A literal (e.g., throw 5;)
+* A variable (e.g., throw x;)
+* An object (e.g., throw runtime_error("Error");)
+_________________________________________________
+🔹 Key Points about throw
+
+1- throw interrupts the current execution immediately.
+2- You can throw any type (int, string, class object, etc.).
+3- The thrown value is matched with the type in the catch.
+    -If types don’t match → the exception goes up the stack.
+4- Stack unwinding happens:
+    -Local objects are destroyed when leaving the function due to throw.
+5- If no catch is found → program calls std::terminate().
+_________________________________________________
+
+* What is Stack Unwinding?
+When you throw an exception in C++, the program stops executing the current function and starts searching for a matching catch block.
+
+But before leaving each function, C++ must:
+
+1- Destroy all local variables in that function (calling their destructors if they are objects).
+
+2- Free up the resources properly.
+
+3- Then move one level up (to the calling function) and repeat until a catch is found.
+
+This process is called stack unwinding.
+It’s like rolling back the function call stack step by step.
+"there are examples in the codeExamples.txt file"
+
+* Key Points:
+- Local objects are destroyed when an exception is thrown.
+- Destructors are called in reverse order (LIFO).
+- If no catch matches, the program calls std::terminate().
+- This is why RAII (Resource Acquisition Is Initialization) is important → resources like files, memory, and sockets can be automatically cleaned up during stack unwinding.
+
+*In short:
+Stack unwinding = C++ cleaning up the mess (destroying local objects) while climbing back up the call stack to find a catch.
+_________________________________________________
+
+* class GradeTooHighException : public std::exception
+
+- This defines a new class called GradeTooHighException.
+- It inherits from the standard library class std::exception.
+- std::exception is the base class for all exceptions in C++ and provides a virtual function what() that returns an error message.
+- By inheriting, your class becomes a type of exception, so it can be thrown and catched like this:
+example:
+throw Bureaucrat::GradeTooHighException();
+
+* const char* what() const throw();
+
+This is a function declaration inside your exception class.
+Let’s dissect it:
+
+* const char* :
+- The return type is a C-style string (a pointer to a constant character array).
+  Example: "Grade too high!".
+
+* what() :
+- This is the name of the function.
+- In std::exception, what() is a virtual function you override to give a meaningful error message.
+
+* const (after the parentheses):
+- Means the function does not modify the object.
+- Example: You can safely call e.what() even if e is a const object.
+
+* throw():
+- This is an exception specification (old C++98 style).
+  It means "what() guarantees it will not throw another exception."
+
+Why is this important?
+
+- If what() itself threw another exception while handling an error, your program could crash in a very messy way.- 
+- By declaring throw(), the compiler (in C++98) enforces that no exceptions can escape this function.
+- he compiler (C++98) ensures this function never throws.
+"there are example"
+⚠️ In modern C++ (C++11 and later), you would write noexcept instead. But in C++98 (42 rules), you must keep throw().
+_________________________________________________
+
+Key points
+
+1- Stack unwinding cleans up all local objects automatically — even in caller functions.
+2- You don’t need to manually free memory if your objects have proper destructors.
+3- This is why RAII (Resource Acquisition Is Initialization) is so important in C++:
+    - Objects automatically release resources in destructors when an exception occurs.
+

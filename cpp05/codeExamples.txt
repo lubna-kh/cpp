@@ -1,0 +1,169 @@
+#include <iostream>
+using namespace std;
+
+void funcC() {
+    cout << "Entering funcC" << endl;
+    throw "Error in funcC!";  // Exception thrown here
+    cout << "Leaving funcC" << endl;  // Never executed
+}
+
+void funcB() {
+    cout << "Entering funcB" << endl;
+    funcC();  // Call funcC
+    cout << "Leaving funcB" << endl;  // Never executed
+}
+
+void funcA() {
+    cout << "Entering funcA" << endl;
+    funcB();  // Call funcB
+    cout << "Leaving funcA" << endl;  // Never executed
+}
+
+int main() {
+    try {
+        funcA();
+    }
+    catch (const char* msg) {
+        cout << "Caught exception: " << msg << endl;
+    }
+}
+
+the output:
+Entering funcA
+Entering funcB
+Entering funcC
+Caught exception: Error in funcC!
+
+_________________________________________________
+#include <iostream>
+using namespace std;
+
+class Test {
+    string name;
+public:
+    Test(string n) : name(n) {
+        cout << "Constructing " << name << endl;
+    }
+    ~Test() {
+        cout << "Destructing " << name << endl;
+    }
+};
+
+void func() {
+    Test t1("Object1");
+    Test t2("Object2");
+
+    throw "Exception!";  // Exception thrown
+}
+
+int main() {
+    try {
+        func();
+    }
+    catch (const char* msg) {
+        cout << "Caught: " << msg << endl;
+    }
+}
+
+the output:
+Constructing Object1
+Constructing Object2
+Destructing Object2
+Destructing Object1
+Caught: Exception!
+
+👉 Explanation:
+- Object1 and Object2 are constructed inside func().
+- When throw happens, C++ automatically calls their destructors in reverse order of creation (like stack popping).
+- This is stack unwinding in action.
+_________________________________________________
+throw:
+
+#include <iostream>
+#include <exception>
+
+class MyException : public std::exception {
+public:
+    // no throw() here
+    const char* what() const {
+        throw std::runtime_error("Oops");  // bad idea!
+        return "Custom error!";
+    }
+};
+
+int main() {
+    try {
+        throw MyException();
+    } catch (const std::exception& e) {
+        try {
+            std::cout << e.what() << std::endl;
+        } catch (...) {
+            std::cout << "what() itself threw an exception!" << std::endl;
+        }
+    }
+}
+
+output:
+what() itself threw an exception!
+"That’s very dangerous because when you’re already inside an error handler, the last thing you want is another exception flying out."
+the problem:
+ Without throw() → what() could throw another exception, which is unsafe in error handling.
+_________________________________________________
+#include <iostream>
+#include <exception>
+
+class First {
+    int* data;
+public:
+    First() { 
+        data = new int(42); 
+        std::cout << "First acquired\n"; 
+    }
+    ~First() { 
+        delete data; 
+        std::cout << "First released\n"; 
+    }
+};
+
+class Second {
+public:
+    Second() {}
+    ~Second() {}
+    void doSomething() { 
+        throw std::runtime_error("Error in Second"); 
+    }
+};
+
+int main() {
+    try {
+        First f;             // 1. First object created, allocates on heap
+        Second s;            // 2. Second object created
+        s.doSomething();     // 3. Throws exception
+    } catch (const std::exception& e) {
+        std::cout << "Caught: " << e.what() << std::endl;
+    }
+}
+
+Step-by-step execution:
+
+1- First f;
+- Constructor runs → allocates memory on heap.
+- f is local to try block.
+
+2- Second s;
+- Constructor runs → no heap allocation here.
+
+3- s.doSomething();
+
+- Throws a std::runtime_error.
+- Normal execution stops immediately.
+
+4- Stack unwinding starts in the try block:
+
+- Local objects in the current scope are destroyed in reverse order of construction:
+- s → destructor called (nothing to free here).
+- f → destructor called → deletes data on the heap.
+
+5- Control goes to the catch block:
+- Exception object is bound to e.
+- e.what() returns "Error in Second".
