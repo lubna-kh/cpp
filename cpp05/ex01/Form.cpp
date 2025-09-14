@@ -1,18 +1,21 @@
 #include "Form.hpp"
+#include "Bureaucrat.hpp"
 
-Form::Form() : name("default") , gradeSigned(1), gradeExc(1), isSigned(false)
+Form::Form() : name("default") , gradeSigned(1), gradeExc(1)
 {
 	//what i should initialize the grade and the name?
 	std::cout<<"Form Default Constructor\n";
+	isSigned = false;
 }
 
-Form::Form(const std::string &name, int gradeSigned, int gradeExc) : name(name), gradeSigned(gradeSigned), gradeExc(gradeExc), isSigned(false)
+Form::Form(const std::string &name, int gradeSigned, int gradeExc) : name(name), gradeSigned(gradeSigned), gradeExc(gradeExc)
 {
 	std::cout<<"Form Parametrized Constructor\n";
 	if (gradeSigned > 150 || gradeExc > 150)
 		throw GradeTooLowException();//this create a GradeTooHighException object
 	if (gradeSigned < 1 || gradeExc < 1)
 		throw GradeTooHighException();
+	gradeSigned = false;
 }
 
 Form::~Form()
@@ -23,6 +26,7 @@ Form::~Form()
 Form::Form(const Form& other) : name(other.name), gradeSigned(other.gradeSigned), gradeExc(other.gradeExc)
 {
 	std::cout<<"Form Copy Constructor\n";
+	this->isSigned = other.isSigned;
 }
 
 Form &Form::operator=(const Form& other)
@@ -30,13 +34,12 @@ Form &Form::operator=(const Form& other)
 	std::cout<<"Form Copy Assignment Constructor\n";
 	if (this != &other)
 	{
-		// this->grade = other.grade;
-		// this->name = other.name;
+		this->isSigned = other.isSigned;
 	}
 	return *this;
 }
 
-void Form::beSigned(Bureaucrat obj)
+void Form::beSigned(const Bureaucrat &obj)
 {
     if (obj.getGrade() > this->gradeSigned)
         throw GradeTooLowException();
@@ -58,4 +61,21 @@ std::ostream &operator<<(std::ostream& out,const Form &obj)
 	out << obj.getName()<<", form grade to signit "<< obj.getGradeSigned()<<".\n";
 	out << obj.getName()<<", form grade to execute "<< obj.getGradeExc()<<".\n";
 	return out;
+}
+
+bool	Form::getIsSigned() const
+{
+	return	isSigned;
+}
+int	Form::getGradeSigned() const
+{
+	return gradeSigned;
+}
+int	Form::getGradeExc() const
+{
+	return gradeExc;
+}
+const std::string &Form::getName() const
+{
+	return name;
 }

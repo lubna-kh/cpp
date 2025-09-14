@@ -100,4 +100,3 @@ Key points
 2- You don’t need to manually free memory if your objects have proper destructors.
 3- This is why RAII (Resource Acquisition Is Initialization) is so important in C++:
     - Objects automatically release resources in destructors when an exception occurs.
-

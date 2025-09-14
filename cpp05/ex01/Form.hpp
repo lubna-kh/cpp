@@ -1,11 +1,8 @@
 #ifndef FORM_HPP
 #define FORM_HPP
 
-#include <iostream>
-#include <string>
-#include <exception>
-class Bureaucrat;
-// #include "Bureaucrat.hpp"
+#include "Bureaucrat.hpp"
+
 class Form
 {
     private:
@@ -21,11 +18,11 @@ class Form
 		~Form();
 
         bool	getIsSigned() const;
-        const int	getGradeSigned() const;
-        const int	getGradeExc() const;
+        int	getGradeSigned() const;
+        int	getGradeExc() const;
 		const std::string &getName() const;
 
-        void beSigned(Bureaucrat obj);
+        void beSigned(const Bureaucrat &obj);
 
         class GradeTooHighException : public std::exception
 		{
