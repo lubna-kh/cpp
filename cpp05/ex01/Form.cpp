@@ -9,14 +9,10 @@ Form::Form() : name("default") , gradeSigned(1), gradeExc(1), isSigned(false)
 Form::Form(const std::string &name, int gradeSigned, int gradeExc) : name(name), gradeSigned(gradeSigned), gradeExc(gradeExc), isSigned(false)
 {
 	std::cout<<"Form Parametrized Constructor\n";
-	if (gradeSigned > 150)
-		throw Bureaucrat::GradeTooLowException();//this create a GradeTooHighException object
-	if (gradeSigned < 1)
-		throw Bureaucrat::GradeTooHighException();
-	if (gradeExc > 150)
-		throw Bureaucrat::GradeTooLowException();//this create a GradeTooHighException object
-	if (gradeExc < 1)
-		throw Bureaucrat::GradeTooHighException();
+	if (gradeSigned > 150 || gradeExc > 150)
+		throw GradeTooLowException();//this create a GradeTooHighException object
+	if (gradeSigned < 1 || gradeExc < 1)
+		throw GradeTooHighException();
 }
 
 Form::~Form()
@@ -43,8 +39,18 @@ Form &Form::operator=(const Form& other)
 void Form::beSigned(Bureaucrat obj)
 {
     if (obj.getGrade() > this->gradeSigned)
-        throw Bureaucrat::GradeTooLowException();
+        throw GradeTooLowException();
     this->isSigned = true;
+}
+
+const char *Form::GradeTooHighException::what() const throw()
+{
+	return "Form Grade too hight! It should be at least 1.";
+}
+
+const char *Form::GradeTooLowException::what() const throw()
+{
+	return "Form Grade too low! It should be at most 150.";
 }
 
 std::ostream &operator<<(std::ostream& out,const Form &obj)

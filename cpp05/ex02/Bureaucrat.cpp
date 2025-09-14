@@ -73,12 +73,12 @@ const std::string &Bureaucrat::getName() const
 
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
-	return "Grade too hight! It should be at least 1.";
+	return "Bureaucrat Grade too hight! It should be at least 1.";
 }
 
 const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
-	return "Grade too low! It should be at most 150.";
+	return "Bureaucrat Grade too low! It should be at most 150.";
 }
 
 void Bureaucrat::signForm(Form &f)
@@ -90,7 +90,7 @@ void Bureaucrat::signForm(Form &f)
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr <<this->getName()<<" couldn't sign "<<f.getName()<<" because his grade less than the requirement\n";
+		std::cerr <<this->getName()<<" couldn't sign "<<f.getName()<<" because "<<e.what()<<'\n';
 	}
 	
 }

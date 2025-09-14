@@ -16,13 +16,26 @@ class AForm
 		AForm(const AForm& other);
 		AForm &operator=(const AForm& other);
 		~AForm();
-        //add the exception classes here
+
         bool	getIsSigned() const;
         const int	getGradeSigned() const;
         const int	getGradeExc() const;
 		const std::string &getName() const;
 
         void beSigned(Bureaucrat obj);
+
+        class GradeTooHighException : public std::exception
+		{
+			const char *what() const throw();
+		};
+		
+		class GradeTooLowException : public std::exception
+		{
+			const char *what() const throw();
+		};
+        
+
+        virtual void execute(Bureaucrat const & executor) const = 0;
 
 
 
