@@ -7,22 +7,22 @@ class AForm
 {
     private:
         const std::string name;
-        bool isSigned;
         const int gradeSigned;
         const int gradeExc;
+        bool isSigned;
     public:
         AForm();
 		AForm(const std::string& name, int gradeSigned, int gradeExc);
 		AForm(const AForm& other);
 		AForm &operator=(const AForm& other);
-		~AForm();
+		virtual ~AForm();
 
         bool	getIsSigned() const;
         int	getGradeSigned() const;
         int	getGradeExc() const;
 		const std::string &getName() const;
 
-        void beSigned(Bureaucrat obj);
+        void beSigned(const Bureaucrat & obj);
 
         class GradeTooHighException : public std::exception
 		{

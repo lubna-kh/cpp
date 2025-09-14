@@ -1,21 +1,19 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
-AForm::AForm() : name("default") , gradeSigned(1), gradeExc(1)
+AForm::AForm() : name("default") , gradeSigned(1), gradeExc(1), isSigned(false)
 {
 	//what i should initialize the grade and the name?
 	// std::cout<<"AForm Default Constructor\n";
-	isSigned = false;
 }
 
-AForm::AForm(const std::string &name, int gradeSigned, int gradeExc) : name(name), gradeSigned(gradeSigned), gradeExc(gradeExc)
+AForm::AForm(const std::string &name, int gradeSigned, int gradeExc) : name(name), gradeSigned(gradeSigned), gradeExc(gradeExc), isSigned(false)
 {
 	// std::cout<<"Form Parametrized Constructor\n";
 	if (gradeSigned > 150 || gradeExc > 150)
 		throw GradeTooLowException();//this create a GradeTooHighException object
 	if (gradeSigned < 1 || gradeExc < 1)
 		throw GradeTooHighException();
-	gradeSigned = false;
 }
 
 AForm::~AForm()
@@ -39,7 +37,7 @@ AForm &AForm::operator=(const AForm& other)
 	return *this;
 }
 
-void AForm::beSigned(Bureaucrat obj)
+void AForm::beSigned(const Bureaucrat & obj)
 {
     if (obj.getGrade() > this->gradeSigned)
         throw GradeTooLowException();
@@ -48,7 +46,7 @@ void AForm::beSigned(Bureaucrat obj)
 
 const char *AForm::GradeTooHighException::what() const throw()
 {
-	return "Form Grade too hight! It should be at least 1.";
+	return "Form Grade too high! It should be at least 1.";
 }
 
 const char *AForm::GradeTooLowException::what() const throw()

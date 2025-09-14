@@ -17,7 +17,7 @@ PresidentialPardonForm::PresidentialPardonForm(const std::string& target) : AFor
         // std::cout<<"PresidentialPardonForm Parametrized Constructor\n";
 }
 
-PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm& other) : AForm("PresidentialPardonForm", 25, 5), target(other.target)
+PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm& other) : AForm(other), target(other.target)
 {
 	// std::cout<<"PresidentialPardonForm Copy Constructor\n";
 }
@@ -27,16 +27,17 @@ PresidentialPardonForm &PresidentialPardonForm::operator=(const PresidentialPard
 	// std::cout<<"PresidentialPardonForm Copy Assignment Constructor\n";
 	if (this != &other)
 	{
-                this->AForm::operator=(other);
+                AForm::operator=(other);
+		target = other.target;
 	}
 	return *this;
 }
 
 void PresidentialPardonForm::execute(Bureaucrat const & executor) const
 {
-	if (getIsSigned())
+	if (!getIsSigned())
 			throw AForm::GradeTooLowException();
 	if (executor.getGrade() > getGradeExc())
-			throw AForm::GradeTooLowException();
+			throw Bureaucrat::GradeTooLowException();
 	std::cout<< target <<" has been pardoned by Zaphod Beeblebrox.\n";
 }

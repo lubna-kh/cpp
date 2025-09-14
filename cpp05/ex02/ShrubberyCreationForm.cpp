@@ -16,7 +16,7 @@ ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target) : AForm(
         // std::cout<<"ShrubberyCreationForm Parametrized Constructor\n";
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& other) : AForm("ShrubberyCreationForm", 145, 137), target(other.target)
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& other) : AForm(other), target(other.target)
 {
 	// std::cout<<"ShrubberyCreationForm Copy Constructor\n";
 }
@@ -27,30 +27,36 @@ ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationF
 	if (this != &other)
 	{
                 this->AForm::operator=(other);
+		target = other.target;
 	}
 	return *this;
 }
 
 void    ShrubberyCreationForm::execute(Bureaucrat const & human) const
 {
-        if (getIsSigned())
+        if (!getIsSigned())
                 throw AForm::GradeTooLowException();
         if (human.getGrade() > getGradeExc())
-                throw AForm::GradeTooLowException();
+                throw Bureaucrat::GradeTooLowException();
+        
         std::ofstream file((target + "_shrubbery").c_str());
-        file << "  &&& &&  & &&\n"
-     << "&& &\\/&\\|& ()|/ @, &&\n"
-     << "&\\/(/&/&||/& /_/)_&/_&\n"
-     << "&() &\\/&|()|/&\\/ '%\" & ()\n"
-     << "&_\\_&&_\\ |& |&&/&__%_/_& &&\n"
-     << "&&   && & &| &| /& & % ()& /&&\n"
-     << "()&_---()&\\&\\|&&-&&--%---()~\n"
-     << "&&    \\|||\n"
-     << "|||\n"
-     << "|||\n"
-     << "|||\n"
-     << "-=-~  .-^- _\n";
+        if (!file.is_open())
+        {
+               throw std::runtime_error("Error: Could not open file.");
+        }
+
+        file << "          &&& &&  & &&\n"
+                << "   && &\\/&\\|& ()|/ @, &&\n"
+                << "   &\\/(/&/&||/& /_/)_&/_&\n"
+                << " &() &\\/&|()|/&\\/ '%\" & ()\n"
+                << "&_\\_&&_\\ |& |&&/&__%_/_& &&\n"
+                << " &&   && & &| &| /& & % ()& /&&\n"
+                << " ()&_---()&\\&\\|&&-&&--%---()~\n"
+                << "       &&    \\|||\n"
+                << "              |||\n"
+                << "              |||\n"
+                << "              |||\n"
+                << "         -=-~  .-^- _\n";
 
         file.close();
-        
 }

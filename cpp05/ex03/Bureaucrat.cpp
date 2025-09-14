@@ -10,7 +10,7 @@ Bureaucrat::Bureaucrat(const std::string &name, int grade) : name(name)
 {
 	// std::cout<<"Bureaucrat Parametrized Constructor\n";
 	if (grade > 150)
-		throw GradeTooLowException();//this create a GradeTooHighException object
+		throw GradeTooLowException();//this will create a GradeTooHighException object
 	if (grade < 1)
 		throw GradeTooHighException();
 	this->grade = grade;
@@ -33,7 +33,6 @@ Bureaucrat &Bureaucrat::operator=(const Bureaucrat& other)
 	if (this != &other)
 	{
 		this->grade = other.grade;
-		// this->name = other.name;
 	}
 	return *this;
 }
@@ -64,12 +63,12 @@ const std::string &Bureaucrat::getName() const
 
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
-	return "Bureaucrat Grade too hight! It should be at least 1.";
+	return "Bureaucrat Grade too high!.";
 }
 
 const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
-	return "Bureaucrat Grade too low! It should be at most 150.";
+	return "Bureaucrat Grade too low!.";
 }
 
 void Bureaucrat::signForm(AForm &f)

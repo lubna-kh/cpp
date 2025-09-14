@@ -39,7 +39,7 @@ AForm &AForm::operator=(const AForm& other)
 	return *this;
 }
 
-void AForm::beSigned(Bureaucrat obj)
+void AForm::beSigned(const Bureaucrat & obj)
 {
     if (obj.getGrade() > this->gradeSigned)
         throw GradeTooLowException();

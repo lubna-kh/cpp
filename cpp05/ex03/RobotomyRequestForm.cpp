@@ -16,7 +16,7 @@ RobotomyRequestForm::RobotomyRequestForm(const std::string& target) : AForm("Rob
         // std::cout<<"RobotomyRequestForm Parametrized Constructor\n";
 }
 
-RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& other) : AForm("RobotomyRequestForm", 72, 45), target(other.target)
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& other) : AForm(other), target(other.target)
 {
 	// std::cout<<"RobotomyRequestForm Copy Constructor\n";
 }
@@ -26,17 +26,20 @@ RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm& o
 	// std::cout<<"RobotomyRequestForm Copy Assignment Constructor\n";
 	if (this != &other)
 	{
-                this->AForm::operator=(other);
+                AForm::operator=(other);
+		target = other.target;
 	}
 	return *this;
 }
 
 void RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {
-	if (getIsSigned())
+	if (!getIsSigned())
 			throw AForm::GradeTooLowException();
 	if (executor.getGrade() > getGradeExc())
-			throw AForm::GradeTooLowException();
+			throw Bureaucrat::GradeTooLowException();
+	
+	std::cout<<"Making some drilling noises...\n";
 	// Get a different random number each time the program runs
 	srand(time(0));
 
@@ -48,6 +51,6 @@ void RobotomyRequestForm::execute(Bureaucrat const & executor) const
 	}
 	else
 	{
-		std::cout<<target<<" he robotomy failed.\n";
+		std::cout<<target<<"'s robotomy failed.\n";
 	}
 }

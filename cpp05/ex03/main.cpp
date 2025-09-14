@@ -1,48 +1,53 @@
+#include <iostream>
+#include "Intern.hpp"
 #include "Bureaucrat.hpp"
-#include "AForm.hpp"
 #include "ShrubberyCreationForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "PresidentialPardonForm.hpp"
-#include <iostream>
 
 int main()
 {
-    try {
-        // Create bureaucrats
-        Bureaucrat bob("Bob", 150);       // low rank
-        Bureaucrat alice("Alice", 50);    // medium rank
-        Bureaucrat charlie("Charlie", 1); // top rank
+    try
+    {
+        Intern someRandomIntern;
+        Bureaucrat bob("Bob", 1);
+        Bureaucrat jim("Jim", 150);
 
-        // Create forms
-        ShrubberyCreationForm shrub("Home");
-        RobotomyRequestForm robot("Bender");
-        PresidentialPardonForm pardon("Marvin");
+        std::cout << "\n--- Testing ShrubberyCreationForm ---\n";
+        AForm* shrub = someRandomIntern.makeForm("shrubbery creation", "Home");
+        if (shrub)
+        {
+            bob.signForm(*shrub);
+            bob.executeForm(*shrub);
+            delete shrub;
+        }
 
-        std::cout << bob << alice << charlie;
-        std::cout << shrub << robot << pardon;
+        std::cout << "\n--- Testing RobotomyRequestForm ---\n";
+        AForm* robo = someRandomIntern.makeForm("robotomy request", "Bender");
+        if (robo)
+        {
+            bob.signForm(*robo);
+            bob.executeForm(*robo);
+            delete robo;
+        }
 
-        bob.signForm(shrub);      // should fail
-        alice.signForm(robot);    // should succeed
-        bob.signForm(pardon);     // should fail
-        charlie.signForm(pardon); // should succeed
+        std::cout << "\n--- Testing PresidentialPardonForm ---\n";
+        AForm* pardon = someRandomIntern.makeForm("presidential pardon", "Marvin");
+        if (pardon)
+        {
+            bob.signForm(*pardon);
+            bob.executeForm(*pardon);
+            delete pardon;
+        }
 
-        // Print status after signing
-        std::cout << shrub << robot << pardon;
-
-        // Executing forms
-        bob.executeForm(shrub);      // should succeed
-        alice.executeForm(robot);    // might succeed or fail robotomy
-        charlie.executeForm(pardon); // should succeed
-
-        // Attempt to execute unsigned form
-        ShrubberyCreationForm unSignedForm("Garden");
-        alice.executeForm(unSignedForm); // should throw exception
-
-    } 
+        std::cout << "\n--- Testing Invalid Form ---\n";
+        AForm* wrong = someRandomIntern.makeForm("coffee request", "Alice");
+        if (wrong)
+            delete wrong;
+            // std::cout << "Intern couldn’t create the form: coffee request\n";
+    }
     catch (std::exception &e)
     {
-        std::cerr << "Exception caught in main: " << e.what() << std::endl;
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
-
-    return 0;
 }
