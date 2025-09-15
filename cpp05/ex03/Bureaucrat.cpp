@@ -10,7 +10,7 @@ Bureaucrat::Bureaucrat(const std::string &name, int grade) : name(name)
 {
 	// std::cout<<"Bureaucrat Parametrized Constructor\n";
 	if (grade > 150)
-		throw GradeTooLowException();//this will create a GradeTooHighException object
+		throw GradeTooLowException();
 	if (grade < 1)
 		throw GradeTooHighException();
 	this->grade = grade;

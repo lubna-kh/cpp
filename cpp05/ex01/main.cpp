@@ -19,7 +19,7 @@ int main()
         alice.signForm(formA);
         bob.signForm(formB);
 
-        std::cout << formA << std::endl;
+        std::cout <<std::endl<< formA << std::endl;
         std::cout << formB << std::endl;
     }
     catch (std::exception &e) {

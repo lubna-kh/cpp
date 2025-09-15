@@ -3,7 +3,6 @@
 
 AForm::AForm() : name("default") , gradeSigned(1), gradeExc(1)
 {
-	//what i should initialize the grade and the name?
 	// std::cout<<"AForm Default Constructor\n";
 	isSigned = false;
 }
@@ -12,10 +11,10 @@ AForm::AForm(const std::string &name, int gradeSigned, int gradeExc) : name(name
 {
 	// std::cout<<"Form Parametrized Constructor\n";
 	if (gradeSigned > 150 || gradeExc > 150)
-		throw GradeTooLowException();//this create a GradeTooHighException object
+		throw GradeTooLowException();
 	if (gradeSigned < 1 || gradeExc < 1)
 		throw GradeTooHighException();
-	gradeSigned = false;
+	isSigned = false;
 }
 
 AForm::~AForm()
@@ -48,12 +47,17 @@ void AForm::beSigned(const Bureaucrat & obj)
 
 const char *AForm::GradeTooHighException::what() const throw()
 {
-	return "Form Grade too hight! It should be at least 1.";
+	return "Form Grade too high!.";
 }
 
 const char *AForm::GradeTooLowException::what() const throw()
 {
-	return "Form Grade too low! It should be at most 150.";
+	return "Form Grade too low!.";
+}
+
+const char *AForm::FromNotSignedException::what() const throw()
+{
+	return "Form has not been signed yet!.";
 }
 
 std::ostream &operator<<(std::ostream& out,const AForm &obj)

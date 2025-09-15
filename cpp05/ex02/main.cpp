@@ -14,9 +14,9 @@ int main()
         Bureaucrat charlie("Charlie", 1); // top rank
 
         // Create forms
-        ShrubberyCreationForm shrub("Home");
-        RobotomyRequestForm robot("Bender");
-        PresidentialPardonForm pardon("Marvin");
+        ShrubberyCreationForm shrub("Home"); //sign=145, exec=134
+        RobotomyRequestForm robot("Bender");//sign=72, exec=45
+        PresidentialPardonForm pardon("Marvin");//sign=25, exec=5
 
         std::cout << bob << alice << charlie;
         std::cout << shrub << robot << pardon;
@@ -30,7 +30,7 @@ int main()
         std::cout << shrub << robot << pardon;
 
         // Executing forms
-        bob.executeForm(shrub);      // should succeed
+        bob.executeForm(shrub);      // should fail
         alice.executeForm(robot);    // might succeed or fail robotomy
         charlie.executeForm(pardon); // should succeed
 
