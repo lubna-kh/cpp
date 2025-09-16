@@ -1,0 +1,83 @@
+
+conversion types:
+- static_cast: normal conversions (safe, checked at compile time).
+- dynamic_cast: downcasting with runtime checks.
+- const_cast: add/remove const/volatile.
+- reinterpret_cast: unsafe low-level conversions.
+__________________________________________________________________
+✅ Compile-time vs Runtime checks in type casting
+
+🔹 Compile-time check
+
+The compiler can already see if the cast is possible based on types.
+
+Example:
+
+//double d = 3.14;
+//int i = static_cast<int>(d);   // ✅ compiler allows
+//std::string s = static_cast<std::string>(d); // ❌ compiler error
+
+Here, static_cast fails at compile-time if no valid conversion exists.
+So static_cast guarantees at compile-time that you’re not casting nonsense types.
+
+🔹 Runtime check
+
+Some things can only be verified when the program is running (not at compile time).
+That’s where dynamic_cast comes in.
+
+Example:
+
+//#include <iostream>
+//
+//class Base { public: virtual ~Base() {} }; // must be polymorphic
+//class Derived : public Base {};
+//class Other : public Base {};
+//
+//Base* b = new Base();
+//
+//Derived* d = dynamic_cast<Derived*>(b); // ❌ runtime check
+//if (d == nullptr) {
+//    std::cout << "b is not actually a Derived" << std::endl;
+//}
+
+- At compile-time: The compiler says, “Base* can be cast to Derived*.” (because of inheritance relation).
+
+- At runtime: The program checks the actual object type that b points to.
+    * If b really points to a Derived, the cast works.
+    * If b points to a Base (or something else), dynamic_cast returns nullptr.
+
+That’s what runtime checked means:
+👉 The compiler allows the cast, but the program checks the real object type while running.
+
+⚡ Summary:
+
+- static_cast: only compile-time checks → "is this cast logically valid according to the type system?"
+- dynamic_cast: compile-time check → "are these classes related?" + runtime check → "is the actual object really of that type?"
+
+more clear example:
+When you use pointers or references to base classes, the compiler only sees the base type, but at runtime the pointer may actually refer to a derived object.
+
+Example:
+
+//class Base { public: virtual ~Base() {} };
+//class Derived : public Base {};
+//class Other : public Base {};
+//
+//Base* b1 = new Derived(); // actual object = Derived
+//Base* b2 = new Other();   // actual object = Other
+//Base* b3 = new Base();    // actual object = Base
+
+Here:
+* b1, b2, and b3 are all Base* pointers.
+* But the actual objects in memory are different (Derived, Other, Base).
+
+🔹 How dynamic_cast uses this
+
+//Derived* d1 = dynamic_cast<Derived*>(b1); // ✅ works, actual object is Derived
+//Derived* d2 = dynamic_cast<Derived*>(b2); // ❌ fails, actual object is Other
+//Derived* d3 = dynamic_cast<Derived*>(b3); // ❌ fails, actual object is Base
+
+* At compile-time, the compiler says: “Yes, Base and Derived are related, so casting is allowed.”
+* At runtime, the program looks at the actual object stored in memory (Derived, Other, Base) and checks:
+    - If the object is really a Derived, the cast succeeds.
+    - Otherwise, it returns nullptr (for pointers) or throws std::bad_cast (for references).

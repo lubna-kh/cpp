@@ -9,34 +9,40 @@ int main()
 {
     try {
         // Create bureaucrats
-        Bureaucrat bob("Bob", 150);       // low rank
-        Bureaucrat alice("Alice", 50);    // medium rank
+        // Bureaucrat bob("Bob", 150);       // low rank
+        
+        // Bureaucrat alice("Alice", 50);    // medium rank
         Bureaucrat charlie("Charlie", 1); // top rank
 
         // Create forms
-        ShrubberyCreationForm shrub("Home"); //sign=145, exec=134
+        // ShrubberyCreationForm shrub("Home"); //sign=145, exec=134
         RobotomyRequestForm robot("Bender");//sign=72, exec=45
-        PresidentialPardonForm pardon("Marvin");//sign=25, exec=5
+        // PresidentialPardonForm pardon("Marvin");//sign=25, exec=5
 
-        std::cout << bob << alice << charlie;
-        std::cout << shrub << robot << pardon;
+        // std::cout << bob << alice << charlie;
+        // std::cout << shrub << robot << pardon;
 
-        bob.signForm(shrub);      // should fail
-        alice.signForm(robot);    // should succeed
-        bob.signForm(pardon);     // should fail
-        charlie.signForm(pardon); // should succeed
+        // bob.signForm(shrub);      // should fail
+        // alice.signForm(robot);    // should succeed
+        // bob.signForm(pardon);     // should fail
+        charlie.signForm(robot); // should succeed
 
         // Print status after signing
-        std::cout << shrub << robot << pardon;
+        // std::cout << shrub << robot << pardon;
 
         // Executing forms
-        bob.executeForm(shrub);      // should fail
-        alice.executeForm(robot);    // might succeed or fail robotomy
-        charlie.executeForm(pardon); // should succeed
+        // bob.executeForm(shrub);      // should fail
+        charlie.executeForm(robot);    // might succeed or fail robotomy
+        // charlie.executeForm(pardon); // should succeed
+        charlie.executeForm(robot);    // might succeed or fail robotomy
+        charlie.executeForm(robot);    // might succeed or fail robotomy
+        charlie.executeForm(robot);    // might succeed or fail robotomy
+        charlie.executeForm(robot);    // might succeed or fail robotomy
+        charlie.executeForm(robot);    // might succeed or fail robotomy
 
-        // Attempt to execute unsigned form
-        ShrubberyCreationForm unSignedForm("Garden");
-        alice.executeForm(unSignedForm); // should throw exception
+        // // Attempt to execute unsigned form
+        // ShrubberyCreationForm unSignedForm("Garden");
+        // alice.executeForm(unSignedForm); // should throw exception
 
     } 
     catch (std::exception &e)

@@ -11,7 +11,7 @@ Form::Form(const std::string &name, int gradeSigned, int gradeExc) : name(name),
 {
 	// std::cout<<"Form Parametrized Constructor\n";
 	if (gradeSigned > 150 || gradeExc > 150)
-		throw GradeTooLowException();//this create a GradeTooHighException object
+		throw Bureaucrat::GradeTooLowException();//this create a GradeTooHighException object
 	if (gradeSigned < 1 || gradeExc < 1)
 		throw GradeTooHighException();
 	isSigned = false;

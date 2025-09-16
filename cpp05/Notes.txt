@@ -89,7 +89,7 @@ Why is this important?
 
 - If what() itself threw another exception while handling an error, your program could crash in a very messy way.- 
 - By declaring throw(), the compiler (in C++98) enforces that no exceptions can escape this function.
-- he compiler (C++98) ensures this function never throws.
+- the compiler (C++98) ensures this function never throws.
 "there are example"
 ⚠️ In modern C++ (C++11 and later), you would write noexcept instead. But in C++98 (42 rules), you must keep throw().
 _________________________________________________
