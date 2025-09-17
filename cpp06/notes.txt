@@ -81,3 +81,8 @@ Here:
 * At runtime, the program looks at the actual object stored in memory (Derived, Other, Base) and checks:
     - If the object is really a Derived, the cast succeeds.
     - Otherwise, it returns nullptr (for pointers) or throws std::bad_cast (for references).
+
+__________________________________________________________________
+
+
+Key characteristics and uses of uintptr_t:
