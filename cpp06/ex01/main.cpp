@@ -6,27 +6,12 @@ int main()
     data.age = 20;
     Serializer ser;
     
+    std::cout<<"Before:"<<std::endl;
     std::cout<< &data <<std::endl;
     uintptr_t add = ser.serialize(&data);
     Data* ptr = ser.deserialize(add);
+    std::cout<<"After:"<<std::endl;
     std::cout<< ptr<<std::endl;
 
     return 0;
 }
-
-// int main()
-// {
-//     Data data(20, "lubna");
-//     Serializer ser;
-
-//     std::cout<<"____________before____________"<<std::endl;
-//     uintptr_t add = ser.serialize(&data);
-//     std::cout<< add <<std::endl;
-//     std::cout<< &data <<std::endl;
-
-//     std::cout<<"____________after____________"<<std::endl;
-//     std::cout<< ser.deserialize(&data)<<std::endl;
-//     std::cout<< &data <<std::endl;
-
-//     return 0;
-// }
