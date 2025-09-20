@@ -1,10 +1,10 @@
-NAME =
+NAME = base
 
 CC = c++
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS =
+SRCS = Base.cpp main.cpp
 
 OBJDIR = objs
 
