@@ -84,5 +84,144 @@ Here:
 
 __________________________________________________________________
 
+FLOAT:
+
+* A float can only store some numbers exactly, not all of them. When the number is very big,
+float skips a lot of numbers in between. So, if you give it a big number, it might round it to
+the closest one it can store. That’s why you don’t always get the exact number you put in,
+even if it’s within the float’s range.
+
+A float stores numbers kind of like scientific notation, but in binary.
+For example, in decimal, 123,000 can be written as 1.23 × 10⁵.
+In binary, a float stores numbers as:
+mantissa × 2^(exponent)
+
+The mantissa is the main digits of the number.
+The exponent says how many times to multiply (or divide) by 2.
+Example:
+If you want to store 8 as a float, it’s 1 × 2³ (mantissa = 1, exponent = 3).
+If you want to store 0.5, it’s 1 × 2⁻¹ (mantissa = 1, exponent = -1).
+
+Why does this matter?
+
+The float has only 32 bits to store everything.
+Some bits are for the mantissa (the digits), some for the exponent (the power of 2), and 1 bit for the sign (+ or -).
+The bigger the exponent, the less detail you can keep in the mantissa.
+So, floats can store very big or very small numbers, but not all numbers in between, because they have to “share” the bits between the mantissa and the exponent.
+That’s why, for big numbers, floats skip some values—they don’t have enough bits to store every possible number exactly.
+
+Example:
+Let’s say a float has only 3 digits for the mantissa (just for illustration; real floats have more).
+
+If you store a small number:
+
+1.23 × 10¹ (mantissa: 1.23, exponent: 1)
+You can keep all 3 digits: 1.23
+If you store a big number:
+
+1.23 × 10⁶ (mantissa: 1.23, exponent: 6)
+Still 3 digits: 1.23, but now the number is much bigger.
+But what if you want to store 1,234,567?
+
+In scientific notation: 1.23 × 10⁶ (rounded, only 3 digits kept)
+The real number is 1,234,567, but you only keep 1.23 × 10⁶ = 1,230,000
+So, as the exponent gets bigger, you lose the ability to store the exact digits after the first few.
+For very big numbers, you can only keep the first few digits, and the rest are rounded off.
+
+This is why, with big exponents, floats can’t store all the details—they run out of space for the mantissa!
+
+In reality:
+
+For a 32-bit float (in C++), the mantissa is 23 bits long (about 7 decimal digits of precision).
+For a 64-bit double, the mantissa is 52 bits long (about 16 decimal digits of precision).
+So, the mantissa’s size depends on the type (float or double), and it’s measured in bits, not decimal digits. The more bits, the more detail (precision) you can store.
+__________________________________________________________________
 
 Key characteristics and uses of uintptr_t:
+
+
+__________________________________________________________________
+the max digits of number for double to try it
+./scalarConverter 55555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
+
+
+
+
+__________________________________________________________________
+// void ScalarConverter::convert(std::string c)
+// {
+
+//     std::istringstream iss(c);
+//     double nb;
+//     iss >> nb;
+//     if (!iss.fail())
+//     {
+//         if(iss.eof())
+//         {
+//             Digit(nb);
+//             return ;
+//         }
+//         else if(iss.peek() == 'f')
+//         {
+//             iss.get();
+//             if (iss.peek() == EOF)
+//             {
+//                 if(isValidFloat(c))
+//                     Digit(nb);
+//                 else
+//                 {
+//                     std::cout<<"char: impossible"<<std::endl;
+//                     std::cout<<"int: impossible"<<std::endl;
+//                     std::cout<<"float: impossible"<<std::endl;
+//                     std::cout<<"double: impossible"<<std::endl;
+//                 }
+//             }
+//             else
+//             {
+//                 std::cout<<"char: impossible"<<std::endl;
+//                 std::cout<<"int: impossible"<<std::endl;
+//                 std::cout<<"float: impossible"<<std::endl;
+//                 std::cout<<"double: impossible"<<std::endl;
+//             }
+//         }
+//     }
+//     std::string remaining;
+//     iss >> remaining;
+//     std::cout<<remaining<<std::endl;
+//     if (!remaining.empty())
+//     {
+//         std::cout<<"char: impossible"<<std::endl;
+//         std::cout<<"int: impossible"<<std::endl;
+//         std::cout<<"float: impossible"<<std::endl;
+//         std::cout<<"double: impossible"<<std::endl;
+//         return ;
+//     }
+//     else if (remaining.length() == 1 && !isdigit(remaining[0]))
+//     {
+//         nb = static_cast<double>(remaining[0]);
+//         Digit(nb);
+//         return ;
+//     }
+//     else if (pseudoLiterals(c))
+//         return ;
+//     else if (nb >= DBL_MAX || nb <= DBL_MIN)
+//     {
+//         std::cout<<"char: impossible"<<std::endl;
+//         std::cout<<"int: impossible"<<std::endl;
+//         std::cout<<"float: impossible"<<std::endl;
+//         std::cout<<"double: impossible"<<std::endl;
+//         return ;
+//     }
+//     else if (c.length() == 1 && !isdigit(c[0]))
+//     {
+//         nb = static_cast<double>(c[0]);
+//         Digit(nb);
+//     }
+//     else
+//     {
+//         std::cout<<"char: impossible"<<std::endl;
+//         std::cout<<"int: impossible"<<std::endl;
+//         std::cout<<"float: impossible"<<std::endl;
+//         std::cout<<"double: impossible"<<std::endl;
+//     }
+// }

@@ -1,4 +1,5 @@
 #include "ScalarConverter.hpp"
+#include <algorithm>
 
 ScalarConverter::ScalarConverter(){}
 
@@ -14,25 +15,6 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter &obj)
 }
 
 ScalarConverter::~ScalarConverter(){}
-
-void    ScalarConverter::Digit(double nb)
-{
-    if (nb >= 32 && nb <= 126)
-        std::cout<<"char: '"<< static_cast<char>(nb) <<"'"<<std::endl;
-    else if (nb < 0 || nb > 127)
-        std::cout<<"char: impossible"<<std::endl;
-    else
-        std::cout<<"char: Non displayable"<<std::endl;
-    if (nb >= INT_MAX || nb <= INT_MIN)
-        std::cout<<"int: impossible"<<std::endl;
-    else
-        std::cout<<"int: "<< static_cast<int>(nb) <<std::endl;
-    if (nb >= FLT_MAX || nb <= FLT_MIN)
-        std::cout<<"float: impossible"<<std::endl;
-    else
-        std::cout<<"float: "<< std::fixed << std::setprecision(1)<<static_cast<float>(nb)<<"f"<<std::endl;
-    std::cout<<"double: "<<std::fixed << std::setprecision(1)<<nb<<std::endl;
-}
 
 bool    ScalarConverter::pseudoLiterals(const std::string &c)
 {
@@ -63,9 +45,54 @@ bool    ScalarConverter::pseudoLiterals(const std::string &c)
     return false;
 }
 
+void    ScalarConverter::Digit(double nb)
+{
+    if (nb >= 32 && nb <= 126)
+        std::cout<<"char: '"<< static_cast<char>(nb) <<"'"<<std::endl;
+    else if (nb < 0 || nb > 127)
+        std::cout<<"char: impossible"<<std::endl;
+    else
+        std::cout<<"char: Non displayable"<<std::endl;
+    if (nb >= INT_MAX || nb <= INT_MIN)
+        std::cout<<"int: impossible"<<std::endl;
+    else
+        std::cout<<"int: "<< static_cast<int>(nb) <<std::endl;
+    float f = std::numeric_limits<float>::max();
+    if (nb >= f || nb <= -f)
+        std::cout<<"float: impossible"<<std::endl;
+    else
+        std::cout<<"float: "<< std::fixed << std::setprecision(1)<<static_cast<float>(nb)<<"f"<<std::endl;
+    std::cout<<"double: "<<std::fixed << std::setprecision(1)<<nb<<std::endl;
+}
+
+bool ScalarConverter::isValidFloat(const std::string &c)
+{
+    size_t i = 0;
+    if (c[i] == '+' || c[i] == '-')
+        i++;
+    bool pointSeen = false;
+    bool digitSeen = false;
+    for (; i < c.length(); i++)
+    {
+        if (isdigit(c[i]))
+            digitSeen = true;
+        else if (c[i] == '.')
+        {
+            if (pointSeen)
+                return false;
+            pointSeen = true;
+        }
+        else if (c[i] == 'f' && pointSeen)
+            return true;
+        else
+            return false;
+    }
+    return digitSeen;
+}
+
 void ScalarConverter::convert(std::string c)
 {
-
+    std::string tmp = c;
     std::istringstream iss(c);
     double nb;
     iss >> nb;
@@ -73,12 +100,17 @@ void ScalarConverter::convert(std::string c)
     {
         std::string c;
         iss >> c;
-        if ((c.length() == 1 && c[0] == 'f') || c.length() == 0)
+        if (((c.length() == 1 && c[0] == 'f') || c.length() == 0) && iss.eof() && isValidFloat(tmp))
         {
             Digit(nb);
         }
         else
-            std::cout<<"Invalid\n";
+        {
+            std::cout<<"char: impossible"<<std::endl;
+            std::cout<<"int: impossible"<<std::endl;
+            std::cout<<"float: impossible"<<std::endl;
+            std::cout<<"double: impossible"<<std::endl;
+        }
     }
     else if (c.length() == 1 && !isdigit(c[0]))
     {
@@ -88,5 +120,10 @@ void ScalarConverter::convert(std::string c)
     else if (pseudoLiterals(c))
         return ;
     else
-        std::cout<<"Invalid\n";
+    {
+        std::cout<<"char: impossible"<<std::endl;
+        std::cout<<"int: impossible"<<std::endl;
+        std::cout<<"float: impossible"<<std::endl;
+        std::cout<<"double: impossible"<<std::endl;
+    }
 }

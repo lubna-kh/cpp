@@ -8,11 +8,8 @@
 
 int main()
 {
-        std::cout << "=== Testing Random Generation and Identification ===" << std::endl;
-        // Seed random number generator
         srand(time(NULL));
 
-        // Test multiple random generations
         std::cout << "Generating and identifying 5 random objects:" << std::endl;
         for (int i = 0; i < 5; i++)
         {
@@ -20,46 +17,43 @@ int main()
                 Base* obj = generate();
                 std::cout << "Identifying using pointer: ";
                 identify(obj);
-                std::cout << "Identifying using reference: ";
+                std::cout << "Identifying using reference:\n";
                 identify(*obj);
                 delete obj;
         }
 
-        // Test with NULL pointer
-        std::cout << "=== Testing NULL pointer ===" << std::endl;
-        Base* nullPtr = NULL;
-        std::cout << "Identifying NULL pointer: ";
-        identify(nullPtr);
+        // std::cout << "=== Testing NULL pointer ===" << std::endl;
+        // Base* nullPtr = NULL;
+        // std::cout << "Identifying NULL pointer: ";
+        // identify(nullPtr);
+        // std::cout << "Identifying NULL reference:\n";
+        // identify(*nullPtr);
 
-        // Test explicit instances of each type
-        std::cout << "=== Testing Explicit Types ===" << std::endl;
+        // std::cout << "=== Testing Explicit Types ===" << std::endl;
+        // Base* a = new A();
+        // Base* b = new B();
+        // Base* c = new C();
 
-        Base* a = new A();
-        Base* b = new B();
-        Base* c = new C();
+        // std::cout << "Testing A:" << std::endl;
+        // std::cout << "By pointer: ";
+        // identify(a);
+        // std::cout << "By reference: ";
+        // identify(*a);
 
-        std::cout << "Testing A:" << std::endl;
-        std::cout << "By pointer: ";
-        identify(a);
-        std::cout << "By reference: ";
-        identify(*a);
+        // std::cout << "Testing B:" << std::endl;
+        // std::cout << "By pointer: ";
+        // identify(b);
+        // std::cout << "By reference: ";
+        // identify(*b);
 
-        std::cout << "Testing B:" << std::endl;
-        std::cout << "By pointer: ";
-        identify(b);
-        std::cout << "By reference: ";
-        identify(*b);
+        // std::cout << "Testing C:" << std::endl;
+        // std::cout << "By pointer: ";
+        // identify(c);
+        // std::cout << "By reference: ";
+        // identify(*c);
 
-        std::cout << "Testing C:" << std::endl;
-        std::cout << "By pointer: ";
-        identify(c);
-        std::cout << "By reference: ";
-        identify(*c);
-
-        // Cleanup
-        delete a;
-        delete b;
-        delete c;
-
+        // delete a;
+        // delete b;
+        // delete c;
         return 0;
 }
