@@ -1,0 +1,72 @@
+📝 What Are Containers?
+- Containers are objects that store collections of other objects.
+- They manage memory, ordering, and access for you.
+- Part of the C++ Standard Template Library (STL)(Conatiners, Algorithms, iterators,functors(Function Object)).
+   *(The C++ Standard Template Library (STL) is a powerful and essential part of the C++ Standard Library,)
+    (providing a collection of generic classes and functions that implement common data structures and algorithms.)
+    (It was originally designed by Alexander Stepanov and significantly influenced the C++ Standard Library. )
+    (The STL is built upon the concept of templates, which allows its components to work with various data types)
+    (without requiring separate implementations for each type. This promotes code reusability and efficiency.)
+    
+
+
+* Think of them like different types of boxes or storage units:
+  some are fast for access, some are good at adding/removing elements,
+  some keep things ordered, etc.
+
+_____________________________________________________________________
+
+* Main Types of Containers:
+
+1- Sequence Containers – store elements in a linear sequence
+
+* Examples: vector, deque, list, array, forward_list
+* Characteristics:
+    -Access by position (index or iterator)
+    -Elements can be inserted/removed in specific ways
+
+* Use case: storing lists of items, arrays that can grow
+
+2- Associative Containers – store elements with keys
+
+* Examples: set, map, multiset, multimap
+* Characteristics:
+    -Automatically sorted by key
+    -Fast search, insertion, and deletion (usually O(log n))
+
+* Use case: dictionaries, unique collections, sorted data
+
+3- Unordered Associative Containers – hash-based
+
+* Examples: unordered_set, unordered_map, unordered_multiset, unordered_multimap
+* Characteristics:
+    -No particular order
+    -Average O(1) access
+* Use case: fast lookups without caring about order
+
+4- Container Adapters – provide restricted interfaces (stack-like, queue-like)
+
+* Examples: stack, queue, priority_queue
+* Characteristics:
+    -Built on top of sequence containers (usually vector or deque)
+    -Don’t allow random access
+
+* Use case: LIFO/FIFO behavior
+_____________________________________________________________________
+⚠️ Common Mistakes When Using Containers
+
+1- Out-of-bounds access
+    -vector[10] when size < 11 → undefined behavior.
+    -Use v.at(10) for bounds checking.
+
+2- Invalidated iterators
+    -Inserting or erasing elements can invalidate iterators (vector, deque).
+
+3- Assuming order in unordered containers
+    -unordered_map and unordered_set don’t maintain order.
+
+4- Copying large containers unnecessarily
+    -Use references or move semantics to avoid performance hits.
+
+5- Using wrong container for the task
+    -Example: list for random access → very slow (O(n)).

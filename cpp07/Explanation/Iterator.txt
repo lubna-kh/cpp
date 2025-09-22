@@ -1,0 +1,55 @@
+* What Are Iterators?
+- An iterator: in C++ is a pointer-like object that points to an element of the STL container.
+- An iterator in C++ is an object that behaves like a pointer and allows you to traverse (move
+  through) elements in a container (like vector, list, map, etc.).
+- They are a generalized way to access container elements without caring about how the container
+  is implemented internally.
+
+_____________________________________________________________________
+* Iterator Categories :
+
+Different containers support different kinds of movement:
+
+- Input/Output Iterators → single-pass reading/writing (like streams).
+- Forward Iterators → can move forward multiple times.
+- Bidirectional Iterators → move forward and backward (e.g., list).
+- Random Access Iterators → jump to any position (e.g., vector, deque).
+
+_____________________________________________________________________
+* Common Mistakes:
+
+1- Dereferencing end() iterator
+
+In STL containers, end() does not point to the last element,
+instead, it points one past the last element.
+
+//auto it = v.end();
+//std::cout << *it;   // ❌ Undefined behavior (end() points past the last element)
+__________________________
+2- Invalidated Iterators
+
+Adding/removing elements in some containers (vector, deque) can invalidate iterators.
+
+//std::vector<int> v = {1, 2, 3};
+//auto it = v.begin();
+//v.push_back(4);   // may reallocate
+//std::cout << *it; // ❌ it may now be invalid
+__________________________
+3- Using the wrong iterator type
+
+For const containers, you must use const_iterator, otherwise compilation error.
+
+//const std::vector<int> v = {1, 2, 3};
+//std::vector<int>::iterator it = v.begin();  // ❌ error
+__________________________
+4- Forgetting to increment/decrement → infinite loop
+
+//for (auto it = v.begin(); it != v.end();) {
+//    std::cout << *it;   // ❌ stuck because it never increments
+//}
+__________________________
+5- Comparing iterators from different containers
+
+//std::vector<int> v1 = {1}, v2 = {2};
+//if (v1.begin() == v2.begin()) {}  // ❌ undefined
+

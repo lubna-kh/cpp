@@ -1,10 +1,10 @@
-NAME = convert
+NAME =
 
 CC = c++
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp ScalarConverter.cpp
+SRCS =
 
 OBJDIR = objs
 

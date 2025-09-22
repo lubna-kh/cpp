@@ -1,0 +1,87 @@
+* template is a powerful tool that allows you to write a generic code
+  that can work with any data type. The idea is to simply pass the data
+  type as a parameter so that we don't need to write the same code for
+  different data types.
+
+* template <typename A, typename B, ...>
+  entity_definition..
+
+* The above syntax can define templates for three components (entities) of C++ language:
+- Function Templates
+- Class Templates
+- Variable Templates (Since C++ 14)
+
+* The template keyword is used to define that the given entity is a template
+  and typename keyword is used to define template parameters which are nothing
+  but types that will be provided when an instance is created. The keyword typename
+  can be replaced by keyword class anytime.
+
+
+//double x = 10.6;                             int  m = 5;
+//double y = 5.3;                              int n = 3;
+//
+//find_max(x,y)       <-- Function calls -->   find_max(m,n)
+//           \                                 /
+//            \                               /
+//             \                             /
+//              \                           /
+//               \                         /
+//               template <typename/class T>
+//               T find_max(T a, T b)
+//  Function     {
+//  Template ->     if (a > b)
+//                      return a;
+//                  else
+//                      return b;
+//               }
+//               /                          \
+//              /                            \
+//             /                              \
+//            /                                \
+// double find_max(double a,double b)       int find_max(int a,itn b)
+// {                                        {
+//      if (a > b)                                 if (a > b)
+//          return a;                                  return a;   
+//      else                                       else
+//          return b;                                  return b;
+// }                                         }
+//                  \                         /
+//                   \                       /
+//                    \                     /
+//                       Template Functions
+
+_____________________________________________________________________
+The syntax ::swap(c, d); means “call the function swap that is defined
+in the global namespace.”
+_____________________________________________________________________
+
+📝 One Definition Rule (ODR) in General
+
+* The ODR is a C++ rule that says:
+
+- Every entity (function, variable, class, template, etc.) must have exactly one definition in the entire program.
+- But it can have multiple declarations.
+
+For example:
+
+// declaration
+int foo(int);
+
+// definition
+int foo(int x) { return x + 1; }
+_____________________________________________________________________
+ ODR for Templates
+
+*Templates are a little special:
+-Templates are not compiled into code immediately when you define them.
+-They are instantiated (code is generated) only when used with a specific type.
+
+*Because of this:
+-The template definition must be visible in every translation unit (source file) where
+it is instantiated.
+-The definition must be identical in all translation units, or you’ll violate ODR.
+
+*MyNote: the definition must be in the header so the compiler during the compile time
+will make a version of the template depend on the type.
+ _____________________________________________________________________
+ 
