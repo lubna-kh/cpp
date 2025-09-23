@@ -16,7 +16,7 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter &obj)
 
 ScalarConverter::~ScalarConverter(){}
 
-bool    ScalarConverter::pseudoLiterals(const std::string &c)
+static bool    pseudoLiterals(const std::string &c)
 {
     if (c == "nanf" || c == "nan")
     {
@@ -45,7 +45,7 @@ bool    ScalarConverter::pseudoLiterals(const std::string &c)
     return false;
 }
 
-void    ScalarConverter::Digit(double nb)
+static void    Digit(double nb)
 {
     if (nb >= 32 && nb <= 126)
         std::cout<<"char: '"<< static_cast<char>(nb) <<"'"<<std::endl;
@@ -65,7 +65,7 @@ void    ScalarConverter::Digit(double nb)
     std::cout<<"double: "<<std::fixed << std::setprecision(1)<<nb<<std::endl;
 }
 
-bool ScalarConverter::isValidFloat(const std::string &c)
+static bool isValidFloat(const std::string &c)
 {
     size_t i = 0;
     if (c[i] == '+' || c[i] == '-')

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 
+
 template<typename T, typename F>
 void iter(T *array, size_t length, F func)
 {
@@ -11,13 +12,13 @@ void iter(T *array, size_t length, F func)
         func(array[i]);
 }
 
-// template<typename T>
-// void iter(const T *array, int length, void func(const T&))
-// {
-//     for (int i = 0; i < length; i++)
-//     func(array[i]);
-// }
-// void (*func)(T &)
+template<typename T, typename F>
+void iter(const T *array, size_t len, const F func)
+{
+    for (size_t i = 0; i < len; i++)
+        func(array[i]);
+}
+
 
 
 

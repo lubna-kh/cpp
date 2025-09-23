@@ -1,10 +1,10 @@
-NAME =
+NAME = array
 
 CC = c++
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
-SRCS =
+SRCS = main.cpp
 
 OBJDIR = objs
 

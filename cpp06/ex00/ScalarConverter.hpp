@@ -23,9 +23,6 @@ class ScalarConverter
         ~ScalarConverter();
     public:
         static void convert(std::string c);
-        static void    Digit(double nb);
-        static bool pseudoLiterals(const std::string &c);
-        static bool isValidFloat(const std::string &c);
 };
 
 #endif
