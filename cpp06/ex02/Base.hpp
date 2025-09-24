@@ -1,7 +1,7 @@
 #ifndef BASE_HPP
 # define BASE_HPP
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream>
 
 

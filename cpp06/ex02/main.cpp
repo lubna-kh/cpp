@@ -2,19 +2,23 @@
 #include "A.hpp"
 #include "B.hpp"
 #include "C.hpp"
-#include <cstdlib>
 #include <ctime>
 #include <iostream>
 
 int main()
 {
-        srand(time(NULL));
+        std::srand(std::time(NULL));
 
         std::cout << "Generating and identifying 5 random objects:" << std::endl;
         for (int i = 0; i < 5; i++)
         {
                 std::cout << "Test " << i + 1 << ":" << std::endl;
                 Base* obj = generate();
+                if (!obj)
+                {
+                        std::cerr << "Memory allocation failed" << std::endl;
+                        return 1;
+                }
                 std::cout << "Identifying using pointer: ";
                 identify(obj);
                 std::cout << "Identifying using reference:\n";

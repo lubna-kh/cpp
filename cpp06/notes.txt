@@ -145,83 +145,53 @@ the max digits of number for double to try it
 ./scalarConverter 55555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
 
 
-
-
 __________________________________________________________________
-// void ScalarConverter::convert(std::string c)
-// {
 
-//     std::istringstream iss(c);
-//     double nb;
-//     iss >> nb;
-//     if (!iss.fail())
-//     {
-//         if(iss.eof())
-//         {
-//             Digit(nb);
-//             return ;
-//         }
-//         else if(iss.peek() == 'f')
-//         {
-//             iss.get();
-//             if (iss.peek() == EOF)
-//             {
-//                 if(isValidFloat(c))
-//                     Digit(nb);
-//                 else
-//                 {
-//                     std::cout<<"char: impossible"<<std::endl;
-//                     std::cout<<"int: impossible"<<std::endl;
-//                     std::cout<<"float: impossible"<<std::endl;
-//                     std::cout<<"double: impossible"<<std::endl;
-//                 }
-//             }
-//             else
-//             {
-//                 std::cout<<"char: impossible"<<std::endl;
-//                 std::cout<<"int: impossible"<<std::endl;
-//                 std::cout<<"float: impossible"<<std::endl;
-//                 std::cout<<"double: impossible"<<std::endl;
-//             }
-//         }
-//     }
-//     std::string remaining;
-//     iss >> remaining;
-//     std::cout<<remaining<<std::endl;
-//     if (!remaining.empty())
-//     {
-//         std::cout<<"char: impossible"<<std::endl;
-//         std::cout<<"int: impossible"<<std::endl;
-//         std::cout<<"float: impossible"<<std::endl;
-//         std::cout<<"double: impossible"<<std::endl;
-//         return ;
-//     }
-//     else if (remaining.length() == 1 && !isdigit(remaining[0]))
-//     {
-//         nb = static_cast<double>(remaining[0]);
-//         Digit(nb);
-//         return ;
-//     }
-//     else if (pseudoLiterals(c))
-//         return ;
-//     else if (nb >= DBL_MAX || nb <= DBL_MIN)
-//     {
-//         std::cout<<"char: impossible"<<std::endl;
-//         std::cout<<"int: impossible"<<std::endl;
-//         std::cout<<"float: impossible"<<std::endl;
-//         std::cout<<"double: impossible"<<std::endl;
-//         return ;
-//     }
-//     else if (c.length() == 1 && !isdigit(c[0]))
-//     {
-//         nb = static_cast<double>(c[0]);
-//         Digit(nb);
-//     }
-//     else
-//     {
-//         std::cout<<"char: impossible"<<std::endl;
-//         std::cout<<"int: impossible"<<std::endl;
-//         std::cout<<"float: impossible"<<std::endl;
-//         std::cout<<"double: impossible"<<std::endl;
-//     }
-// }
+
+1. Upcasting (Derived → Base)
+- Always safe. No runtime check needed.
+
+//class Base { };
+//class Derived : public Base { };
+
+//Derived* d = new Derived;
+//Base* b = static_cast<Base*>(d);  // Safe upcast
+
+2. Downcasting (Base → Derived)
+- Safe only if the object really is of the derived type.
+- You must know that the object is actually Derived.
+
+//class Base { virtual void f() {} };
+//class Derived : public Base { };
+
+Base* b = new Derived;
+
+// You are sure that b points to Derived:
+Derived* d = static_cast<Derived*>(b);  // Safe
+
+⚠ If b actually points to a Base object, this cast is undefined behavior.
+3. Across sibling classes
+- Not safe. static_cast cannot convert between unrelated derived classes.
+
+//class Base { };
+//class Derived1 : public Base { };
+//class Derived2 : public Base { };
+
+//Base* b = new Derived1;
+// This is illegal with static_cast:
+// Derived2* d2 = static_cast<Derived2*>(b); // Compile error
+
+✅ Rule of thumb
+- Upcast → always safe.
+- Downcast → only use if you are 100% sure of the object type.
+- Dynamic_cast → use if you need runtime safety for downcasts.
+
+
+| Cast Type      | From → To           | Safe?                             | Notes                              |
+| -------------- | ------------------- | --------------------------------  | ---------------------------------- |
+| `static_cast`  | Derived → Base      | ✅ Always safe                    | Upcasting; compile-time check only |
+| `static_cast`  | Base → Derived      | ⚠ Only if actual type matches     | Downcasting; **no runtime check**  |
+| `static_cast`  | Derived1 → Derived2 | ❌ Unsafe / Compile error         | Siblings; unrelated types          |
+| `dynamic_cast` | Base → Derived      | ✅ Safe; returns nullptr if wrong | Runtime check included             |
+| `dynamic_cast` | Derived → Base      | ✅ Always safe                    | Same as `static_cast` for upcast   |
+| `dynamic_cast` | Derived1 → Derived2 | ❌ Returns nullptr                | Safe runtime check prevents UB     |

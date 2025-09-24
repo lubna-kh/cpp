@@ -44,7 +44,7 @@ Array<T>::Array(const Array<T> &other)
 }
 
 template <typename T>
-Array<T> &Array<T>::operator=(const Array &other)
+Array<T> &Array<T>::operator=(const Array<T> &other)
 {
     std::cout<< "Copy Assignment Constructor called" << std::endl;
     if (this != &other)
@@ -80,7 +80,7 @@ Array<T>::~Array()
 template <typename T>
 T &Array<T>::operator[](unsigned int index)
 {
-    if (index >= len || index < 0)
+    if (index >= len)
         throw std::out_of_range("Index out of range");
     return arr[index];
 }

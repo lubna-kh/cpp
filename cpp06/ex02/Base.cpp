@@ -9,13 +9,13 @@ Base * generate(void)
 {
         int n;
 
-        n = rand() % 3;
+        n = std::rand() % 3;
         if (n == 0)
-                return (new A());
+                return (new (std::nothrow) A());
         else if (n == 1)
-                return (new B());
+                return (new (std::nothrow) B());
         else
-                return (new C());
+                return (new (std::nothrow) C());
 }
 
 void identify(Base* p)

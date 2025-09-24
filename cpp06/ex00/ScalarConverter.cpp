@@ -98,9 +98,9 @@ void ScalarConverter::convert(std::string c)
     iss >> nb;
     if (!iss.fail())
     {
-        std::string c;
-        iss >> c;
-        if (((c.length() == 1 && c[0] == 'f') || c.length() == 0) && iss.eof() && isValidFloat(tmp))
+        std::string rem;
+        iss >> rem;
+        if (((rem.length() == 1 && rem[0] == 'f') || rem.length() == 0) && iss.eof() && isValidFloat(tmp))
         {
             Digit(nb);
         }

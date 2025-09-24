@@ -22,8 +22,8 @@ class Array
         unsigned int size() const;
 };
 
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const Array<T> &arr);
+// template <typename T>
+// std::ostream &operator<<(std::ostream &os, const Array<T> &arr);
 
 #include "Array.tpp"
 #endif
