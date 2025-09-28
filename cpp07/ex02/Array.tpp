@@ -86,6 +86,14 @@ T &Array<T>::operator[](unsigned int index)
 }
 
 template <typename T>
+T &Array<T>::operator[](unsigned int index) const
+{
+    if (index >= len)
+        throw std::out_of_range("Index out of range");
+    return arr[index];
+}
+
+template <typename T>
 std::ostream &operator<<(std::ostream &os, const Array<T> &arr)
 {
     for (unsigned int i = 0; i < arr.size(); i++)

@@ -62,7 +62,7 @@ int main(int, char**)
     // }
     // delete [] mirror;
 
-     Array<int> a(5);
+     const Array<int> a(5);
     for (unsigned int i = 0; i < a.size(); i++)
         std::cout << a[i] << " "; 
     std::cout << std::endl;
