@@ -79,7 +79,7 @@ int main(int, char**)
         std::cerr << "Out of bounds!" << std::endl;
     }
 
-    Array<int> b = a;
+    const Array<int> b = a;
     b[2] = 100;
     std::cout << a[2] << std::endl;
     return 0;
