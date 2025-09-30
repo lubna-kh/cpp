@@ -1,0 +1,31 @@
+* Iterators (what they are & categories):
+
+* Concept & purpose:
+
+- Iterators are generalized pointers to traverse containers. begin() and end() bracket the range.
+- Iterator categories determine what algorithms you can use:
+  * InputIterator / OutputIterator — single-pass (streams).
+  * ForwardIterator — multi-pass, can read multiple times.
+  * BidirectionalIterator — can ++ and -- (e.g., std::list).
+  * RandomAccessIterator — supports +, -, indexing (e.g., std::vector, std::deque).
+
+* Why it matters?
+- Some algorithms require specific categories (e.g., std::sort requires RandomAccessIterator). Choosing the wrong container can block you from using an algorithm.
+
+* Common pitfalls:
+- Using std::sort on a std::list — not allowed because list iterators are bidirectional; std::list provides its own sort() member.
+- Misunderstanding end() — it is past-the-end and must not be dereferenced.
+
+_______________________________________________________________________________________
+— STL algorithms and their iterator requirements:
+
+* Concept & purpose:
+- The <algorithm> library provides powerful, reusable algorithms (sort, find, min_element, max_element, for_each, etc.). They operate on iterator ranges.
+
+* Why it matters?
+- Algorithms are faster to write and use well-tested implementations, but you must pick a container whose iterators meet the algorithm’s requirements.
+
+* Key rules:
+- std::find works with InputIterator (very flexible).
+- std::sort requires RandomAccessIterator (vector/deque ok; list not ok).
+- If container iterators are insufficient, either use a container with the right iterator category or use container-specific algorithms (e.g., std::list::sort()).
