@@ -29,3 +29,34 @@ ________________________________________________________________________________
 - std::find works with InputIterator (very flexible).
 - std::sort requires RandomAccessIterator (vector/deque ok; list not ok).
 - If container iterators are insufficient, either use a container with the right iterator category or use container-specific algorithms (e.g., std::list::sort()).
+_______________________________________________________________________________________
+Choosing the underlying container: vector vs deque vs list:
+
+Quick comparison:
+
+* std::vector<T>
+- Memory: contiguous.
+- Access: random access (fast operator[]).
+- push_back: amortized O(1), may reallocate and invalidate iterators.
+- Good for algorithms requiring random access (like std::sort).
+
+* std::deque<T>
+- Memory: segmented blocks, still offers random access.
+- push_front and push_back are O(1).
+- Iterator invalidation rules differ from vector (less likely to reallocate everything).
+- Default underlying container for std::stack.
+
+* std::list<T> :
+- Memory: nodes linked.
+- push_back, insert, erase: O(1) with iterator stability.
+- No random access (only bidirectional iterators). std::sort does not work; use list.sort() instead.
+
+* Why it matters?
+- The underlying container determines what algorithms you can apply to the iterators and what operations are cheap or expensive.
+
+* Pitfalls:
+
+- If you expose iterators and pick std::list, users can iterate perfectly but can’t use std::sort.
+- If you pick vector, iterators can be invalidated after many push_back() calls.
+
+* Practice: for each container (vector, deque, list) push 1000 integers, measure (or think about) which operations are O(1) vs O(n), and try to call std::sort() — note which containers allow it.

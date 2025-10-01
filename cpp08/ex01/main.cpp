@@ -14,7 +14,7 @@ int main()
     try
     {
         // for (int i=0;i < 10000;i++)
-        //     sp.addNumber(i);
+        //     sp.addNumber(tmp_v[i]);
         sp.addRange(tmp_v.begin(), tmp_v.end());
         std::cout << sp.shortestSpan() << std::endl;
         std::cout << sp.longestSpan() << std::endl;

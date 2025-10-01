@@ -46,13 +46,14 @@ unsigned int Span::longestSpan()
 
 void Span::addRange(std::vector<int>::iterator begin, std::vector<int>::iterator end)
 {
-    for (std::vector<int>::iterator it = begin; it != end;it++)
-    {
-        if ((unsigned int)v.size() >= N)
-            throw std::out_of_range("Span is Full!!");
-        addNumber(*it);
-    }
-    // if (v.size() + std::distance(begin, end) > N)
-        // throw std::out_of_range("Span is Full!!");
-    // v.insert(v.end(), begin, end);
+    // for (std::vector<int>::iterator it = begin; it != end;it++)
+    // {
+    //     if ((unsigned int)v.size() >= N)
+    //         throw std::out_of_range("Span is Full!!");
+    //     addNumber(*it);
+    // }
+    std::sort(begin, end);
+    if (v.size() + std::distance(begin, end) > N)
+        throw std::out_of_range("Span is Full!!");
+    v.insert(v.end(), begin, end);
 }
