@@ -34,6 +34,11 @@ unsigned int Span::shortestSpan()
 {
     if (v.size() < 2)
         throw std::out_of_range("Not enough elements to find a span");
+    size_t min = 0;
+        for (std::vector<int>::iterator it=v.begin();it<v.end();i++)
+        {
+            
+        }
     return (*(v.begin() + 1) - *v.begin());
 }
 
@@ -44,7 +49,7 @@ unsigned int Span::longestSpan()
     return (*(v.end() - 1) - *(v.begin()));
 }
 
-void Span::addRange(std::vector<int>::iterator begin, std::vector<int>::iterator end)
+void Span::addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end)
 {
     // for (std::vector<int>::iterator it = begin; it != end;it++)
     // {
