@@ -17,8 +17,6 @@ class MutantStack : public std::stack<T, Container>
             if (this != &other)
             {
                 std::stack<T, Container>::operator=(other);
-                // or
-                // this->c = other.c;
             }
             return *this;
         }

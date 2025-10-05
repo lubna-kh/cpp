@@ -30,23 +30,53 @@ void Span::addNumber(int n)
     std::sort(v.begin(), v.end());
 }
 
+
+// unsigned int Span::shortestSpan()
+// {
+//     if (v.size() < 2)
+//         throw std::out_of_range("Not enough elements to find a span");
+//     unsigned int min = UINT_MAX;
+//     for (std::vector<int>::iterator it = v.begin(); it != v.end() - 1; it++)
+//     {
+//         long long diff = static_cast<long long>(*(it + 1)) - static_cast<long long>(*it);
+//         if (diff < 0)
+//             diff = -diff;
+//         min = std::min(min, static_cast<unsigned int>(diff));
+//         if (min == 0)
+//             break;
+//     }
+//     return min;
+// }
+
+// unsigned int Span::longestSpan()
+// {
+//     if (v.size() < 2)
+//         throw std::out_of_range("Not enough elements to find a span");
+//     long long diff = static_cast<long long>(*(v.end() - 1)) - static_cast<long long>(*v.begin());
+//     if (diff < 0)
+//         diff = -diff;
+//     return static_cast<unsigned int>(diff);
+// }
+
 unsigned int Span::shortestSpan()
 {
     if (v.size() < 2)
         throw std::out_of_range("Not enough elements to find a span");
-    size_t min = 0;
-        for (std::vector<int>::iterator it=v.begin();it<v.end();i++)
-        {
-            
-        }
-    return (*(v.begin() + 1) - *v.begin());
+    unsigned int min = 4294967295;
+    for (std::vector<int>::iterator it = v.begin(); it != v.end() - 1;it++)
+    {
+        min = std::min(min, (((unsigned int)(*(it + 1))) - (*it)));
+        if (min == 0)
+            break;
+    }
+    return (min);
 }
 
 unsigned int Span::longestSpan()
 {
     if (v.size() < 2)
         throw std::out_of_range("Not enough elements to find a span");
-    return (*(v.end() - 1) - *(v.begin()));
+    return (static_cast<unsigned int>(*(v.end() - 1) - *(v.begin())));
 }
 
 void Span::addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end)
