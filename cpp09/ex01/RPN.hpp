@@ -4,6 +4,13 @@
 #include <iostream>
 #include <stack>
 
+enum Operator
+{
+    ADDITION,
+    SUBTRACTION,
+    MULTIPLICATION,
+    DIVISION
+};
 
 class RPN
 {
@@ -18,6 +25,7 @@ class RPN
         ~RPN();
 
         void start();
+        bool handleOperator(const Operator &oo, bool &valid);
 
 };
 
