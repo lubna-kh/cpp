@@ -1,0 +1,12 @@
+Let’s restate the three main steps of the Ford–Johnson (Merge-Insertion) algorithm:
+1- Pairing: Make pairs and separate them into:
+ - mainChain → larger elements
+ - pending → smaller elements
+
+2- Recursion: Recursively sort the mainChain.
+
+3- Insertion: Use binary search to insert:
+ - Each element from pending:
+ - Plus the leftover (if there was an odd element at the end)
+   into the correct position in the sorted mainChain.
+________________________________________________________________________________

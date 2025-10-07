@@ -20,7 +20,7 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other)
 
 PmergeMe::~PmergeMe() {}
 
-bool checkArgs(char **av)
+bool PmergeMe::checkArgs(char **av)
 {
     for (size_t i = 1; av[i]; i++)
     {
@@ -33,103 +33,102 @@ bool checkArgs(char **av)
             }
         }
     }
-    return false;
-}
-
-template <typename T>
-void    PmergeMe::merge(T &container, int left, int mid, int right)
-{
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-    T L(n1);
-    T R(n2);
-
-    for (int i = 0; i < n1; i++)
-        L[i] = container[left + i];
-    for (int j = 0; j < n2; j++)
-        R[j] = container[mid + 1 + j];
-
-    int i = 0;
-    int j = 0;
-    int k = left;
-
-    while (i < n1 && j < n2)
-    {
-        if (L[i] <= R[j])
-        {
-            container[k] = L[i];
-            i++;
-        }
-        else
-        {
-            container[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < n1)
-    {
-        container[k] = L[i];
-        i++;
-        k++;
-    }
-
-    while (j < n2)
-    {
-        container[k] = R[j];
-        j++;
-        k++;
-    }
-}
-
-template <typename T>
-void    PmergeMe::sortMerge(T &container, int left, int right)
-{
-    if (left < right)
-    {
-        int mid = left + (right - left) / 2;
-        sortMerge(container, left, mid);
-        sortMerge(container, mid + 1, right);
-        merge(container, left, mid, right);
-    }
-}
-
-void PmergeMe::start(int ac, char **av)
-{
-    if(checkArgs(av))
-        return ;
-    for (size_t i = 1; i < (size_t)ac; i++)
+    for (size_t i = 1; av[i]; i++)
     {
         int num = atoi(av[i]);
         v.push_back(num);
         d.push_back(num);
     }
+    return false;
+}
+
+
+
+void    PmergeMe::buildChain(std::vector<std::vector<int> > matrix,std::vector<int> &mainChain,std::vector<int> &smallerChain)
+{
+    for (size_t i = 0; i < matrix.size(); i++)
+    {
+        mainChain.push_back(matrix[i][1]);
+        smallerChain.push_back(matrix[i][0]);
+    }
+}
+
+// void    PmergeMe::jacobsthalLinear(std::vector<int> &mainChain,std::vector<int> &smallerChain,int leftOver);
+// {
+
+// }
+
+void    PmergeMe::sortVector(std::vector<int> &v)
+{
+    if (v.size() <= 1)
+        return ;
+    std::vector<std::vector<int> > matrix;
+    std::vector<int> mainChain;
+    std::vector<int> smallerChain;
+    int leftOver = -1;
+
+    for(size_t i= 0; i + 1 < v.size();i+=2)
+    {
+        
+        std::vector<int> pair;
+        pair.push_back(v[i]);
+        pair.push_back(v[i + 1]);
+        if (pair[0] > pair[1])
+            std::swap(pair[0], pair[1]);
+        matrix.push_back(pair);
+        //another way to do it
+        // if (v[i] < v[i + 1])
+        //     matrix.push_back({v[i], v[i + 1]});
+        // else
+        //     matrix.push_back({v[i + 1], v[i]});
+    }
+    if (v.size() % 2 != 0)
+        leftOver = v[v.size() - 1];
+    buildChain(matrix, mainChain, smallerChain);
+    sortVector(mainChain);
+    // jacobsthalLinear(mainChain, smallerChain, leftOver);
+    for (size_t i = 0;i < smallerChain.size();i++)
+    {
+        std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(),smallerChain[i]);
+        mainChain.insert(pos,smallerChain[i]);
+    }
+    if (leftOver != -1)
+    {
+        std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), leftOver);
+        mainChain.insert(pos, leftOver);
+    }
+    v = mainChain;
+}
+
+void PmergeMe::start(int ac, char **av)
+{
+    (void)ac;
+    if(checkArgs(av))
+        return ;
     std::cout<<"Before: ";
     for (size_t i = 0; i < v.size(); i++)
         std::cout<<v[i]<<" ";
     std::cout<<"\n";
     //sorting part to be added here
-    struct timeval startV, endV;
-    gettimeofday(&startV, NULL);
-    sortMerge(v, 0, v.size() - 1);
-    gettimeofday(&endV, NULL);
+    // struct timeval startV, endV;
+    // gettimeofday(&startV, NULL);
+    sortVector(v);
+    // gettimeofday(&endV, NULL);
     
-    struct timeval startD, endD;
-    gettimeofday(&startD, NULL);
-    sortMerge(d, 0, d.size() - 1);
-    gettimeofday(&endD, NULL);
+    // struct timeval startD, endD;
+    // gettimeofday(&startD, NULL);
+    // sortMerge(d, 0, d.size() - 1);
+    // gettimeofday(&endD, NULL);
 
     std::cout<<"After: ";
     for (size_t i = 0; i < v.size(); i++)
         std::cout<<v[i]<<" ";
     std::cout<<"\n";
 
-    double timeV = ((endV.tv_sec  - startV.tv_sec) * 1e6 + (endV.tv_usec - startV.tv_usec));
-    double timeD = ((endD.tv_sec  - startD.tv_sec) * 1e6 + (endD.tv_usec - startD.tv_usec));
-    std::cout<< std::fixed << std::setprecision(5);
-    std::cout<<"Time to process a range of "<<ac - 1<<" elements with std::vector : "<< timeV <<" us"<<std::endl;
-    std::cout<<"Time to process a range of "<<ac - 1<<" elements with std::deque : "<< timeD <<" us"<<std::endl;
+    // double timeV = ((endV.tv_sec  - startV.tv_sec) * 1e6 + (endV.tv_usec - startV.tv_usec));
+    // double timeD = ((endD.tv_sec  - startD.tv_sec) * 1e6 + (endD.tv_usec - startD.tv_usec));
+    // std::cout<< std::fixed << std::setprecision(5);
+    // std::cout<<"Time to process a range of "<<ac - 1<<" elements with std::vector : "<< timeV <<" us"<<std::endl;
+    // std::cout<<"Time to process a range of "<<ac - 1<<" elements with std::deque : "<< timeD <<" us"<<std::endl;
 
 }

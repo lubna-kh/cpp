@@ -19,11 +19,11 @@ class PmergeMe
         PmergeMe &operator=(const PmergeMe &other);
         ~PmergeMe();
 
-        void start(int ac, char **av);
-        template <typename T>
-        void    sortMerge(T &container, int left, int right);
-        template <typename T>
-        void    merge(T &container, int left, int mid, int right);
+        bool    checkArgs(char **av);
+        void    start(int ac, char **av);
+        void    sortVector(std::vector<int> &v);
+        void    buildChain(std::vector<std::vector<int> > matrix,std::vector<int> &mainChain,std::vector<int> &smallerChain);
+        // void    jacobsthalLinear(std::vector<int> &mainChain,std::vector<int> &smallerChain,int leftOver);
 };
 
 #endif
