@@ -7,6 +7,11 @@
 #include <cstdlib>// atoi
 #include <sys/time.h>// gettimeofday
 #include <iomanip>// std::setprecision
+#include <algorithm>// std::find
+
+//insert at front for deque : O(1)
+//insert at front for vector : O(n)
+
 
 class PmergeMe
 {
@@ -22,8 +27,10 @@ class PmergeMe
         bool    checkArgs(char **av);
         void    start(int ac, char **av);
         void    sortVector(std::vector<int> &v);
+        void    sortDeque(std::deque<int> &v);
+
         void    buildChain(std::vector<std::vector<int> > matrix,std::vector<int> &mainChain,std::vector<int> &smallerChain);
-        // void    jacobsthalLinear(std::vector<int> &mainChain,std::vector<int> &smallerChain,int leftOver);
+        std::vector<int>    jacobsthalLinear(size_t n);
 };
 
 #endif

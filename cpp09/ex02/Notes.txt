@@ -10,3 +10,66 @@ Let’s restate the three main steps of the Ford–Johnson (Merge-Insertion) alg
  - Plus the leftover (if there was an odd element at the end)
    into the correct position in the sorted mainChain.
 ________________________________________________________________________________
+* Step 1: The raw Jacobsthal sequence: J(0)=0, J(1)=1, J(n)=J(n−1)+2×J(n−2)
+
+→ Sequence:
+0, 1, 1, 3, 5, 11, 21, 43, ...
+
+
+* 0 is skipped because the element at index 0 is inserted separately before using Jacobsthal.
+ The duplicate 1 is skipped because we only insert index 1 once.
+
+
+
+
+* The first element of the smaller chain (index 0) is inserted first — we don’t need Jacobsthal for that. So we skip 0 in the Jacobsthal sequence.
+ J(1) and J(2) are both 1. We only need index 1 once, so we skip the duplicate.
+
+✅ So instead of:
+0, 1, 1, 3, 5, 11, 21, ...
+
+we use:
+1, 3, 5, 11, 21, ...
+________________________________________________________________________________
+Examples:
+
+1-Example: 7 elements
+
+smallerChain = [A, B, C, D, E, F, G]
+indices:        0  1  2  3  4  5  6
+
+✅ Insertion order:
+
+Insert 0 (A)
+Jacobsthal → 1 → B
+Jacobsthal → 3 → D
+Jacobsthal → 5 → F
+Remaining: 2, 4, 6
+→ insert 2 (C)
+→ insert 4 (E)
+→ insert 6 (G)
+
+Final insertion sequence:
+0, 1, 3, 5, 2, 4, 6
+
+2- Example: 12 elements
+
+smallerChain = [A, B, C, D, E, F, G, H, I, J, K, L]
+indices:        0  1  2  3  4  5  6  7  8  9 10 11
+
+Jacobsthal: 1, 3, 5, 11 (all fit here).
+
+✅ Insertion order:
+
+0 (A)
+1 (B)
+3 (D)
+5 (F)
+11 (L)
+Remaining: 2, 4, 6, 7, 8, 9, 10
+→ insert in increasing order: 2, 4, 6, 7, 8, 9, 10
+
+Final insertion sequence:
+
+0, 1, 3, 5, 11, 2, 4, 6, 7, 8, 9, 10
+________________________________________________________________________________
