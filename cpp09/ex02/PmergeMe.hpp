@@ -12,7 +12,6 @@
 //insert at front for deque : O(1)
 //insert at front for vector : O(n)
 
-
 class PmergeMe
 {
     private:
@@ -29,8 +28,11 @@ class PmergeMe
         void    sortVector(std::vector<int> &v);
         void    sortDeque(std::deque<int> &v);
 
-        void    buildChain(std::vector<std::vector<int> > matrix,std::vector<int> &mainChain,std::vector<int> &smallerChain);
-        std::vector<int>    jacobsthalLinear(size_t n);
+        template<typename matrixCon, typename container>
+        void    buildChain(matrixCon matrix, container &mainChain,container &smallerChain);
+
+        template<typename container>
+        container    jacobsthalLinear(size_t n);
 };
 
 #endif
