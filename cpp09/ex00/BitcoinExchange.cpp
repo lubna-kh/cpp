@@ -144,6 +144,7 @@ static bool checkDate(const std::string &date, const std::string &line)
 
 static bool checkValue(const std::string &line,std::string &value)
 {
+    // size_t countDot = 0;
     if ((!value.empty() && value[0] != ' ') || value.empty())
     {
         std::cerr << "Error: bad input => " << line << std::endl;
@@ -160,13 +161,21 @@ static bool checkValue(const std::string &line,std::string &value)
         std::cerr << "Error: bad input => " << line << std::endl;
         return false;
     }
-    for (size_t i = 0;value[i];i++)
+    std::istringstream iss(value);
+    float f;  
+    if (!(iss >> f)) //this will return false if the conversion fails
     {
-        if (!isdigit(value[i]) && value[i] != '.' && value[i] != '-' && value[i] != '+')
-        {
-            std::cerr << "Error: bad input => " << line << std::endl;
-            return false;
-        }
+        std::cerr << "Errorrrr: bad input => " << line << std::endl;
+        return false;
+    }
+    if (iss.peek() == 'f')
+    {
+        iss.ignore();
+    }
+    if (iss.peek() != EOF)
+    {
+        std::cerr << "Error: bad input => " << line << std::endl;
+        return false;
     }
     float val = std::strtof(value.c_str(), NULL);
     if (val < 0)
