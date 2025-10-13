@@ -7,6 +7,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <string>
+#include <iomanip>
 
 class BitcoinExchange
 {

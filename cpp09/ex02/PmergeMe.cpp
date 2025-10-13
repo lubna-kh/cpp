@@ -55,27 +55,53 @@ void    PmergeMe::buildChain(matrixCon matrix, container &mainChain,container &s
 template<typename container>
 container    PmergeMe::jacobsthalLinear(size_t n)
 {
-    container jacobsthal;
-
-    if (n == 0)
-        return jacobsthal;
-    jacobsthal.push_back(0);
+    container jac;
+    container order;
+    order.push_back(0);
     if (n == 1)
-        return jacobsthal;
-    jacobsthal.push_back(1);
+        return order;
+    jac.push_back(0);
+    jac.push_back(1);
     while (true)
-    {
-        size_t next = jacobsthal[jacobsthal.size() - 1] + 2 * jacobsthal[jacobsthal.size() - 2];
+    {   
+        size_t next = jac[jac.size() - 1] + 2 * jac[jac.size() - 2];
         if (next >= n)
             break ;
-        jacobsthal.push_back(next);
+        jac.push_back(next);
+    }
+    // std::vector<bool> visited(n, false);
+    // visited[0] = true;
+    // for (size_t i = 0; i < jac.size(); i++)
+    // {
+    //     if ((size_t)jac[i] < n && !visited[jac[i]])
+    //     {
+    //         order.push_back(jac[i]);
+    //         visited[jac[i]] = true;
+    //     }
+    // }
+    // for (size_t i = 0; i < n; i++)
+    // {
+    //     if (!visited[i])
+    //     {
+    //         order.push_back(i);
+    //         visited[i] = true;
+    //     }
+    // }
+    for( size_t i = 0;i<jac.size();i++)
+    {
+        if (std::find(order.begin(), order.end(), jac[i]) == order.end())
+        {
+            order.push_back(jac[i]);
+        }
     }
     for (size_t i = 0;i < n;i++)
     {
-        if(std::find(jacobsthal.begin(), jacobsthal.end(), i) == jacobsthal.end())
-            jacobsthal.push_back(i);
+        if(std::find(order.begin(), order.end(), i) == order.end())
+        {
+            order.push_back(i);
+        }
     }
-    return jacobsthal;
+    return order;
 }
 
 void    PmergeMe::sortDeque(std::deque<int> &d)
@@ -163,7 +189,7 @@ void PmergeMe::start(int ac, char **av)
     for (size_t i = 0; i < v.size(); i++)
         std::cout<<v[i]<<" ";
     std::cout<<"\n";
-    //sorting part to be added here
+
     struct timeval startV, endV;
     gettimeofday(&startV, NULL);
     sortVector(v);

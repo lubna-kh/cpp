@@ -125,7 +125,7 @@ static bool checkDate(const std::string &date, const std::string &line)
     }
     else if ((month == 1 || month == 3 || month == 5 || month == 7
             || month == 8 || month == 10 || month == 12)
-            && day > 30)
+            && day > 31)
     {
         std::cerr << "Error: bad input => " << line << std::endl;
         return false;
@@ -165,7 +165,7 @@ static bool checkValue(const std::string &line,std::string &value)
     float f;  
     if (!(iss >> f)) //this will return false if the conversion fails
     {
-        std::cerr << "Errorrrr: bad input => " << line << std::endl;
+        std::cerr << "Error: bad input => " << line << std::endl;
         return false;
     }
     if (iss.peek() == 'f')
@@ -247,7 +247,7 @@ void BitcoinExchange::findNearestDate(const std::string &date, const float &valu
     }
     if (it != data.begin())
         it--;
-    std::cout<<date<<" => "<<value<<" = "<< it->second * value <<std::endl;
+    std::cout<< date <<" => "<< value <<" = "<< it->second * value <<std::endl;
 }
 
 void BitcoinExchange::compareDate(const std::string &line,const std::string &date, const float &value)
