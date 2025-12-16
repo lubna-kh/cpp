@@ -1,0 +1,24 @@
+* What is an Abstract Class in C++?
+
+An abstract class is a class that cannot be used to create objects directly. It is meant to be a base class that provides a common interface but doesn't define full behavior.
+______________________________________________________
+
+* What is a Pure Virtual Function?
+
+A pure virtual function is a function declared in a base class that must be overridden in any derived class.
+
+It is written like this:
+
+virtual void draw() = 0;  // Pure virtual function
+
+- The = 0 means “no default implementation”.
+- It forces derived classes to implement the function.
+______________________________________________________
+
+* An abstract class defines what derived classes must do, but not how.
+* A pure virtual function is a function with = 0 and must be overridden.
+* You can't create objects of abstract classes.
+* Useful when you want to define a common interface but let derived classes define specific behavior.
+______________________________________________________
+
+

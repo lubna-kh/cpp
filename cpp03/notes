@@ -1,0 +1,66 @@
+* Static polymorphism (without virtual)
+
+1- Decided at compile time.
+2- Function chosen depends on the declared type of the variable.
+3- Fast (no vtable lookup).
+4- Example: function overloading, templates, non-virtual overrides.
+
+* Dynamic polymorphism (with virtual)
+
+1- Decided at runtime.
+2- Function chosen depends on the real object type.
+3- Uses vtable + vptr (slightly slower).
+4- Needed when you want base class pointers/references to behave according to the derived object.
+
+_____________________________________________________________
+
+
+
+* A copy constructor builds a new object from an existing one: T(const T& other).
+
+* With inheritance, a Derived object contains a Base subobject plus its own members.
+
+* Therefore, the Derived copy constructor must:
+1- Call the Base copy constructor in the initializer list, and
+
+2- Copy Derived’s own members (deep copy if it owns dynamic memory).
+
+- If you don’t call Base(other) explicitly, C++ calls the Base default constructor, and you lose the Base state.
+
+(there are example code called example.cpp)
+
+_________________________________________________________
+
+
+* : Animal(other) — calls the Base class copy constructor before constructing the Derived part. Construction order is Base → members → Derived body.
+
+* Initializer list — the : Animal(other), tricks(0), trickCount(other.trickCount) part runs before the constructor body and is the only way to:
+
+- Choose which Base constructor runs,
+- Initialize const/reference members,
+- Efficiently set member values.
+
+* Deep copy — when a class owns dynamic memory (like new[]), the copy must allocate new memory and duplicate the contents. Copying just the pointer is a shallow copy (both objects would point to the same memory → double free / bugs).
+
+* Rule of Three (C++98) — if you need any of these, you likely need all three:
+
+- custom destructor,
+- copy constructor, 
+- copy assignment operator.
+
+* Common pitfalls to avoid:
+
+1- Forgetting Base(other) → the Base gets default-constructed; Base data isn’t copied.
+
+2- Shallow copying raw pointers → two objects manage the same memory (crash/double delete).
+ 
+3- Not handling self-assignment in operator= → leak or corruption (copy ctor doesn’t have this issue).
+ 
+4- Missing virtual destructor in Base when deleting Derived through Base*.
+
+______________________________________________________
+
+* To resolve ambiguity you can use :
+
+1- Scope resolution operator (::): Specify which class's member to use, like d.B:: print().
+2- Virtual Inheritance: Use the virtual keyword to ensure that only one copy of the base class members is inherited.

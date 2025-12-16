@@ -1,0 +1,187 @@
+Canonical form:
+1. Copy Constructor
+
+Purpose: Create a new object as a copy of an existing one.
+
+Called when:
+1- You initialize a new object from another:
+Fixed a;
+Fixed b = a;  // copy constructor
+
+2- You pass an object by value into a function:
+
+class Test {
+public:
+    Test() { std::cout << "Default constructor\n"; }
+    Test(const Test& other) { std::cout << "Copy constructor\n"; }
+};
+
+void func(Test t) {  // <-- t is passed by value
+    std::cout << "Inside function\n";
+}
+
+int main() {
+    Test a;       // Default constructor
+    func(a);      // Copy constructor (because t is a copy of a)
+    return 0;
+}
+
+3- You return an object by value from a function:
+
+class Test {
+public:
+    Test() { std::cout << "Default constructor\n"; }
+    Test(const Test& other) { std::cout << "Copy constructor\n"; }
+};
+
+Test createObject() {
+    Test temp;   // Default constructor
+    return temp; // Copy constructor (returning by value)
+}
+
+int main() {
+    Test a = createObject();
+    return 0;
+}
+
+*Example:
+Fixed::Fixed(const Fixed& other)
+{
+    this->value = other.value;
+    std::cout << "Copy constructor called\n";
+}
+
+-----------------------------------------------------
+2. Copy Assignment Operator
+
+Purpose: Copy the contents of one existing object into another existing object.
+
+Called when:
+
+You assign one object to another after both exist:
+Fixed a;
+Fixed b;
+b = a;   // copy assignment
+
+* Example:
+
+Fixed& Fixed::operator=(const Fixed& other)
+{
+    if (this != &other) { // avoid self-assignment
+        this->value = other.value;
+    }
+    std::cout << "Copy assignment operator called\n";
+    return *this; // return the current object
+}
+
+🔑 Key Difference
+
+Copy constructor: Makes a new object (like giving birth to a twin).
+
+Copy assignment operator: Reuses an already existing object, and overwrites it (like replacing the brain of one twin with the other’s 😅).
+
+______________________________________________________________________
+std::ostream& operator<<(std::ostream& os, const Fixed& obj);
+Breakdown:
+1. std::ostream&
+
+Meaning: The function returns a reference to an ostream object (like std::cout).
+
+Why?
+
+Returning a reference allows you to chain outputs: std::cout << a << b << c;
+
+2. operator<<
+
+Meaning: This defines an overload of the << operator.
+
+Why?
+
+The << operator is originally defined for built-in types (like int, float).
+
+By overloading it, you tell C++ how to print your custom type (Fixed).
+
+3. (std::ostream& os, const Fixed& obj)
+
+Parameters:
+
+std::ostream& os:
+
+This is the output stream object (like std::cout or a file stream).
+
+Passed by reference to avoid copying....why?
+
+Why we don’t want a copy of std::ostream?
+
+- Streams cannot be copied
+std::ostream (and other stream classes like std::istream, std::fstream) are non-copyable.
+
+The copy constructor and copy assignment for std::ostream are deleted in the standard library.
+
+This is because streams usually represent unique system resources (like console, file, network buffer).
+If you copy them, both objects would try to manage the same underlying resource → unsafe and undefined.
+
+const Fixed& obj:
+
+The Fixed object you want to print.
+
+Passed by const reference so it doesn’t get copied and you don’t modify it.
+
+4. return os;
+
+At the end of the function, you return the stream os.
+
+This lets you chain multiple << operators together.
+
+Example Implementation:
+std::ostream& operator<<(std::ostream& os, const Fixed& obj) {
+    os << obj.toFloat(); // insert floating-point representation of Fixed
+    return os;
+}
+
+
+____________________________________________________________________________________________
+1. Conversion to int :
+
+// return (value >> fractionalBits);
+
+Here you shift right → equivalent to integer division by 2^fractionalBits.
+
+Why? Because you don’t care about the fractional part—you only want the whole number.
+
+Example:
+
+Suppose fractionalBits = 8.
+
+If value = 6400 (stored as fixed-point),
+
+Real value = 6400 / 256 = 25.0.
+
+To get the integer: 6400 >> 8 = 25. ✅
+
+So >> fractionalBits is just discarding the fractional part.
+
+2. Conversion to float :
+
+// return (static_cast<float>(value) / (1 << fractionalBits));
+Here you divide by 2^fractionalBits.
+
+This rescales the stored integer into the correct decimal value.
+
+Example:
+
+Same case, value = 6400.
+
+6400 / 256.0 = 25.0.
+
+If value = 6425, then
+
+6425 / 256.0 = 25.09765625.
+
+That’s the precise float.
+
+✅ Key difference:
+
+toInt() → drops the fractional part → gives you just the whole number.
+
+toFloat() → rescales with division → gives you the actual decimal.
